@@ -1,5 +1,22 @@
 # Engineering Journal
 
+## 2025-01-14 18:45
+
+### Renamed Command and Added Interactive Checkup Prompt
+- **What**: Changed `vuln-scan` command to `checkup` and added optional prompt during init
+- **Why**: Better naming convention and improved user experience
+- **How**: Updated all references from vuln-scan to checkup, added interactive prompt after initialization
+- **Issues**: None
+- **Result**: Users now see "Would you like Conductor to perform a security checkup?" after init
+
+### Interactive Security Checkup Features:
+- Optional prompt after framework initialization
+- Clear explanation that no files will be changed
+- Generates checkup prompt if user confirms
+- Skipped with --yes flag for automation
+
+---
+
 ## 2025-01-14 18:30
 
 ### Refactored Security Scanning to CLI Command

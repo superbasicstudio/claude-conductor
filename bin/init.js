@@ -53,18 +53,18 @@ The framework creates a complete documentation suite including:
     }
   });
 
-// Vuln-scan subcommand
+// Checkup subcommand
 program
-  .command('vuln-scan')
-  .description('Generate a security vulnerability scan prompt for Claude Code')
+  .command('checkup')
+  .description('Generate a security and health checkup prompt for Claude Code')
   .option('-p, --path <path>', 'Path to scan (defaults to current directory)', '.')
   .addHelpText('after', `
-This command generates a prompt for Claude Code to perform a security scan.
+This command generates a prompt for Claude Code to perform a security and health checkup.
 
 Examples:
-  $ npx claude-conductor vuln-scan          # Scan current directory
-  $ npx claude-conduct vuln-scan            # Using shorthand
-  $ npx claude-conduct vuln-scan -p ./src   # Scan specific directory
+  $ npx claude-conductor checkup          # Check current directory
+  $ npx claude-conduct checkup            # Using shorthand
+  $ npx claude-conduct checkup -p ./src   # Check specific directory
 
 What it checks for:
 - Exposed .env files or API keys in code
@@ -73,10 +73,10 @@ What it checks for:
 - Hardcoded credentials or secrets
 - Common security anti-patterns
 
-The scan is informational only and will not modify any code.`)
+The checkup is informational only and will not modify any code.`)
   .action(async (options) => {
     try {
-      await generateVulnScanPrompt(options);
+      await generateCheckupPrompt(options);
     } catch (error) {
       console.error(chalk.red('Error:'), error.message);
       process.exit(1);
@@ -240,6 +240,25 @@ async function initializeFramework(targetDir, options) {
   console.log(chalk.gray('3. Start documenting your architecture'));
   console.log('');
   
+  // Ask if they want to run a health check
+  if (!options.yes) {
+    console.log('');
+    console.log(chalk.cyan('┌─────────────────────────────────────────────────────────────────┐'));
+    console.log(chalk.cyan('│') + ' ' + chalk.cyan.bold('🪄 Would you like Conductor to perform a security checkup?') + '       ' + chalk.cyan('│'));
+    console.log(chalk.cyan('├─────────────────────────────────────────────────────────────────┤'));
+    console.log(chalk.cyan('│') + ' This will generate a prompt for Claude Code to audit your       ' + chalk.cyan('│'));
+    console.log(chalk.cyan('│') + ' codebase for common security issues. No files will be changed.  ' + chalk.cyan('│'));
+    console.log(chalk.cyan('└─────────────────────────────────────────────────────────────────┘'));
+    console.log('');
+    
+    const runCheckup = await promptConfirmation(chalk.yellow('Run security checkup? (y/N): '));
+    
+    if (runCheckup) {
+      console.log('');
+      await generateCheckupPrompt({ path: targetPath });
+    }
+  }
+  
   // Important seed command recommendation
   console.log(chalk.yellow('┌─────────────────────────────────────────────────────────────────┐'));
   console.log(chalk.yellow('│') + ' ' + chalk.yellow.bold('⚠️  RECOMMENDED NEXT STEP') + '                                       ' + chalk.yellow('│'));
@@ -280,7 +299,7 @@ async function initializeFramework(targetDir, options) {
     console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
     console.log(chalk.blue('│') + ' This ensures Claude maintains a detailed development history! 📝 ' + chalk.blue('│'));
     console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
-    console.log(chalk.blue('│') + chalk.gray(' For security scans, use: npx claude-conduct vuln-scan 🪄') + '        ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.gray(' For security checkups, use: npx claude-conduct checkup 🪄') + '       ' + chalk.blue('│'));
     console.log(chalk.blue('└─────────────────────────────────────────────────────────────────┘'));
     console.log('');
   }
@@ -799,22 +818,22 @@ async function checkExistingFiles(targetPath, full = false) {
   return existingFiles;
 }
 
-async function generateVulnScanPrompt(options) {
+async function generateCheckupPrompt(options) {
   const scanPath = path.resolve(options.path || '.');
   
   // Display header
   console.log('');
   console.log(chalk.magenta('┌─────────────────────────────────────────────────────────────────┐'));
-  console.log(chalk.magenta('│') + ' ' + chalk.magenta.bold('🪄 Conductor Security Vulnerability Scanner') + '                      ' + chalk.magenta('│'));
+  console.log(chalk.magenta('│') + ' ' + chalk.magenta.bold('🪄 Conductor Security & Health Checkup') + '                           ' + chalk.magenta('│'));
   console.log(chalk.magenta('└─────────────────────────────────────────────────────────────────┘'));
   console.log('');
   
-  console.log(chalk.blue('[*] Generating security scan prompt for Claude Code...'));
+  console.log(chalk.blue('[*] Generating checkup prompt for Claude Code...'));
   console.log(chalk.gray(`Target path: ${scanPath}`));
   console.log('');
   
   // Generate the prompt
-  const prompt = `Please perform a security vulnerability scan of the codebase at: ${scanPath}
+  const prompt = `Please perform a security and health checkup of the codebase at: ${scanPath}
 
 Check for:
 1. Exposed .env files or API keys in code
@@ -829,7 +848,7 @@ IMPORTANT:
 - Be silent if no issues are found
 - Present findings as warnings for review
 
-Start the scan with: "Conductor🪄 is scanning for vulnerabilities..."`;
+Start the checkup with: "Conductor🪄 is running a security checkup..."`;
 
   // Display the prompt in a nice box
   console.log(chalk.yellow('┌─────────────────────────────────────────────────────────────────┐'));
@@ -848,9 +867,9 @@ Start the scan with: "Conductor🪄 is scanning for vulnerabilities..."`;
   
   // Tips
   console.log(chalk.gray('💡 Tips:'));
-  console.log(chalk.gray('- This scan is read-only and won\'t modify your code'));
+  console.log(chalk.gray('- This checkup is read-only and won\'t modify your code'));
   console.log(chalk.gray('- Claude will only alert on critical security issues'));
-  console.log(chalk.gray('- Run this periodically to catch new vulnerabilities'));
+  console.log(chalk.gray('- Run this periodically to maintain code health'));
   console.log('');
 }
 
