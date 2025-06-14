@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Claude Conductor</title>
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #333;
+            --background: #f8f9fa;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --code-bg: #e9ecef;
+            --link-color: #0066cc;
+            --link-hover: #0052a3;
+            --header-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4da3ff;
+            --secondary-color: #e0e0e0;
+            --background: #1a1a1a;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --code-bg: #2d2d2d;
+            --link-color: #4da3ff;
+            --link-hover: #80bfff;
+            --header-bg: #242424;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+        }
+
+        .content {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .content h2 {
+            font-size: 1.75rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--secondary-color);
+        }
+
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 1rem;
+            margin-left: 2rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        .content pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .content a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        .content strong {
+            font-weight: 600;
+        }
+
+        .footer {
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            transition: opacity 0.2s;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .theme-toggle svg {
+            display: none;
+        }
+
+        [data-theme="light"] .sun-icon,
+        [data-theme="dark"] .moon-icon {
+            display: block;
+        }
+
+        .footer a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .content h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="https://github.com/superbasicstudio/claude-conductor" class="logo-section">
+                    <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="120" fill="#0066cc" rx="24"/>
+                        <path d="M30 50 L50 30 L70 50" stroke="white" stroke-width="4" fill="none"/>
+                        <path d="M50 30 L50 70" stroke="white" stroke-width="4"/>
+                        <path d="M30 70 L50 90 L70 70" stroke="white" stroke-width="4" fill="none"/>
+                        <path d="M50 90 L50 50" stroke="white" stroke-width="4"/>
+                    </svg>
+                    <span class="logo-text">Claude Conductor</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a>
+                    <a href="https://www.npmjs.com/package/claude-conductor">npm</a>
+                    <a href="./terms.html">Terms</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="container">
+            <h1>Privacy Policy</h1>
+            
+            <p><strong>Effective Date:</strong> January 6, 2025</p>
+            
+            <p><strong>Super Basic Studio, LLC</strong> ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains our practices regarding the Claude Conductor npm package.</p>
+            
+            <h2>We CARE About Your Privacy!</h2>
+            
+            <p><em>Claude Conductor is designed with privacy as a core principle, we actually care about privacy and ACT on it, unlike... others.</em></p>
+            
+            <p>The tool:</p>
+            
+            <ul>
+                <li>Does <strong>NOT</strong> collect any personal information</li>
+                <li>Does <strong>NOT</strong> transmit any data to external servers</li>
+                <li>Does <strong>NOT</strong> track usage or analytics</li>
+                <li>Does <strong>NOT</strong> store any user data outside your local filesystem</li>
+                <li>Does <strong>NOT</strong> require any authentication or user accounts</li>
+                <li>Does <strong>NOT</strong> use cookies or similar tracking technologies</li>
+                <li>Does <strong>NOT</strong> make your roommate suddenly get ads for "10X Developer Bootcamp" after you googled "how to center a div" 💀</li>
+            </ul>
+            
+            <h2>What Claude Conductor Does</h2>
+            
+            <p>Claude Conductor is a command-line tool that:</p>
+            
+            <ul>
+                <li>Creates markdown documentation files in your local project directory</li>
+                <li>Reads your local codebase to analyze structure (only when you run it)</li>
+                <li>All operations are performed locally on your machine</li>
+                <li>No data ever leaves your computer</li>
+            </ul>
+            
+            <h2>Open Source Transparency</h2>
+            
+            <p>Our complete source code is available at <a href="https://github.com/superbasicstudio/claude-conductor">github.com/superbasicstudio/claude-conductor</a>. You can verify our privacy claims by reviewing the code yourself.</p>
+            
+            <h2>Local Storage and Cookies</h2>
+            
+            <p>Claude Conductor's documentation website uses local storage (not cookies) for the following purposes:</p>
+            
+            <ul>
+                <li><strong>Theme Preference:</strong> We store your light/dark mode preference in your browser's local storage to maintain your preferred viewing experience across visits</li>
+                <li><strong>No Tracking:</strong> This preference is stored only in your browser and is never transmitted to any server</li>
+                <li><strong>No Third-Party Cookies:</strong> We do not use any tracking cookies or third-party analytics</li>
+            </ul>
+            
+            <p>You can clear this stored preference at any time by clearing your browser's local storage for this site.</p>
+            
+            <h2>Third-Party Services</h2>
+            
+            <h3>npm Registry</h3>
+            <p>When you install Claude Conductor via npm, you're subject to npm's privacy policy. We don't control or have access to any data npm might collect during package installation.</p>
+            
+            <h3>GitHub</h3>
+            <p>Our source code is hosted on GitHub. Any interactions with our GitHub repository are subject to GitHub's privacy policy.</p>
+            
+            <h2>Your Rights</h2>
+            
+            <p>Since we don't collect any personal data, there's no data for us to delete, modify, or return to you. You have complete control over any files created by Claude Conductor on your local system.</p>
+            
+            <h2>Children's Privacy</h2>
+            
+            <p>Claude Conductor doesn't collect information from anyone, including children under 13.</p>
+            
+            <h2>Changes to This Policy</h2>
+            
+            <p>We may update this Privacy Policy from time to time. Any changes will be posted on our GitHub repository with an updated effective date.</p>
+            
+            <h2>Contact Us</h2>
+            
+            <p>If you have questions about this Privacy Policy, please:</p>
+            <ul>
+                <li>Open an issue on our <a href="https://github.com/superbasicstudio/claude-conductor/issues">GitHub repository</a></li>
+                <li>Contact us at: <a href="mailto:hello@superbasic.studio">hello@superbasic.studio</a></li>
+            </ul>
+            
+            <h2>Legal Basis</h2>
+            
+            <p>This privacy policy is provided in compliance with various privacy laws and regulations. Since Claude Conductor doesn't collect personal data, most data protection regulations don't apply to its operation.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 <a href="https://superbasic.studio" target="_blank" rel="noopener noreferrer">Super Basic Studio, LLC</a>. All rights reserved.</p>
+            <p>
+                <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a> • 
+                <a href="https://www.npmjs.com/package/claude-conductor">npm</a> • 
+                <a href="./terms.html">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to 'dark'
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', currentTheme);
+        
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            const theme = htmlElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "name": "claude-conductor",
+  "version": "1.0.5",
+  "description": "Modular documentation framework for AI-assisted development with Claude Code",
+  "bin": {
+    "claude-conductor": "bin/init.js",
+    "claude-conduct": "bin/init.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "claude",
+    "claude code documentation",
+    "claude conductor",
+    "claude code framework",
+    "ai",
+    "vibe code framework",
+    "vibe coding",
+    "development",
+    "super basic studio",
+    "conductor"
+  ],
+  "author": "Super Basic Studio, LLC (https://superbasic.studio)",
+  "license": "MIT",
+  "files": [
+    "templates/",
+    "bin/",
+    "README.md",
+    "CLAUDE.md"
+  ],
+  "dependencies": {
+    "commander": "^11.0.0",
+    "fs-extra": "^11.0.0",
+    "glob": "^10.0.0",
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superbasicstudio/claude-conductor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/superbasicstudio/claude-conductor/issues"
+  },
+  "homepage": "https://github.com/superbasicstudio/claude-conductor#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/superbasicstudio"
+    },
+    {
+      "type": "patreon",
+      "url": "https://patreon.com/superbasicstudio"
+    }
+  ]
+}

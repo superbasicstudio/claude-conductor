@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Claude Conductor</title>
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #333;
+            --background: #f8f9fa;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --code-bg: #e9ecef;
+            --link-color: #0066cc;
+            --link-hover: #0052a3;
+            --header-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4da3ff;
+            --secondary-color: #e0e0e0;
+            --background: #1a1a1a;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --code-bg: #2d2d2d;
+            --link-color: #4da3ff;
+            --link-hover: #80bfff;
+            --header-bg: #242424;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+        }
+
+        .content {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .content h2 {
+            font-size: 1.75rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--secondary-color);
+        }
+
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 1rem;
+            margin-left: 2rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        .content pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .content a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        .content strong {
+            font-weight: 600;
+        }
+
+        .footer {
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            transition: opacity 0.2s;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .theme-toggle svg {
+            display: none;
+        }
+
+        [data-theme="light"] .sun-icon,
+        [data-theme="dark"] .moon-icon {
+            display: block;
+        }
+
+        .footer a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .content h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="https://github.com/superbasicstudio/claude-conductor" class="logo-section">
+                    <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="120" height="120" fill="#0066cc" rx="24"/>
+                        <path d="M30 50 L50 30 L70 50" stroke="white" stroke-width="4" fill="none"/>
+                        <path d="M50 30 L50 70" stroke="white" stroke-width="4"/>
+                        <path d="M30 70 L50 90 L70 70" stroke="white" stroke-width="4" fill="none"/>
+                        <path d="M50 90 L50 50" stroke="white" stroke-width="4"/>
+                    </svg>
+                    <span class="logo-text">Claude Conductor</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a>
+                    <a href="https://www.npmjs.com/package/claude-conductor">npm</a>
+                    <a href="./privacy.html">Privacy</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="container">
+            <h1>Terms of Service</h1>
+            
+            <p><strong>Effective Date:</strong> January 6, 2025</p>
+            
+            <p>These Terms of Service ("Terms") govern your use of the Claude Conductor npm package ("Software") provided by Super Basic Studio, LLC ("we", "our", or "us").</p>
+            
+            <h2>1. Acceptance of Terms</h2>
+            
+            <p>By installing, accessing, or using Claude Conductor, you agree to be bound by these Terms. If you do not agree to these Terms, do not use the Software.</p>
+            
+            <h2>2. License Grant</h2>
+            
+            <p>Claude Conductor is licensed under the MIT License. This means:</p>
+            
+            <ul>
+                <li>You can use the Software for any purpose, including commercial applications</li>
+                <li>You can modify, distribute, and sublicense the Software</li>
+                <li>You must include the original copyright notice and license in any copies</li>
+                <li>The Software is provided "as is" without warranty of any kind</li>
+            </ul>
+            
+            <h2>3. Use of the Software</h2>
+            
+            <p>You may use Claude Conductor to:</p>
+            <ul>
+                <li>Generate documentation for your software projects</li>
+                <li>Analyze your codebase structure</li>
+                <li>Create templates for use with Claude Code AI assistant</li>
+            </ul>
+            
+            <p>You agree NOT to:</p>
+            <ul>
+                <li>Use the Software for any illegal purposes</li>
+                <li>Attempt to exploit or harm the Software or its users</li>
+                <li>Misrepresent the origin or ownership of the Software</li>
+                <li>Remove or alter any proprietary notices from the Software</li>
+            </ul>
+            
+            <h2>4. Privacy</h2>
+            
+            <p>Claude Conductor does not collect, store, or transmit any personal data. All operations are performed locally on your machine. For more details, see our <a href="./privacy.html">Privacy Policy</a>.</p>
+            
+            <h2>5. Disclaimer of Warranties</h2>
+            
+            <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.</p>
+            
+            <p>We do not warrant that:</p>
+            <ul>
+                <li>The Software will meet your requirements</li>
+                <li>The Software will be uninterrupted, secure, or error-free</li>
+                <li>The results obtained from the Software will be accurate or reliable</li>
+                <li>Any errors in the Software will be corrected</li>
+            </ul>
+            
+            <h2>6. Limitation of Liability</h2>
+            
+            <p>IN NO EVENT SHALL SUPER BASIC STUDIO, LLC OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+            
+            <h2>7. Indemnification</h2>
+            
+            <p>You agree to indemnify, defend, and hold harmless Super Basic Studio, LLC and its contributors from any claims, damages, losses, liabilities, costs, and expenses arising from your use of the Software or violation of these Terms.</p>
+            
+            <h2>8. Open Source Dependencies</h2>
+            
+            <p>Claude Conductor uses various open source dependencies, each with their own licenses. You are responsible for complying with the licenses of any dependencies when using the Software.</p>
+            
+            <h2>9. Modifications to Terms</h2>
+            
+            <p>We reserve the right to modify these Terms at any time. Changes will be posted to our GitHub repository with an updated effective date. Your continued use of the Software after any modifications indicates your acceptance of the updated Terms.</p>
+            
+            <h2>10. Termination</h2>
+            
+            <p>These Terms remain in effect until terminated. You may terminate by ceasing all use of the Software and destroying all copies. We may terminate your rights under these Terms if you fail to comply with any of its provisions.</p>
+            
+            <h2>11. Governing Law</h2>
+            
+            <p>These Terms are governed by the laws of the State of Delaware, United States, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be resolved in the courts of Delaware.</p>
+            
+            <h2>12. Entire Agreement</h2>
+            
+            <p>These Terms, together with the MIT License and our Privacy Policy, constitute the entire agreement between you and Super Basic Studio, LLC regarding Claude Conductor.</p>
+            
+            <h2>13. Contact Information</h2>
+            
+            <p>If you have questions about these Terms, please contact us at:</p>
+            
+            <ul>
+                <li>GitHub Issues: <a href="https://github.com/superbasicstudio/claude-conductor/issues">github.com/superbasicstudio/claude-conductor/issues</a></li>
+                <li>Email: <a href="mailto:hello@superbasic.studio">hello@superbasic.studio</a></li>
+            </ul>
+            
+            <h2>14. Severability</h2>
+            
+            <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that these Terms shall otherwise remain in full force and effect.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 <a href="https://superbasic.studio" target="_blank" rel="noopener noreferrer">Super Basic Studio, LLC</a>. All rights reserved.</p>
+            <p>
+                <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a> • 
+                <a href="https://www.npmjs.com/package/claude-conductor">npm</a> • 
+                <a href="./privacy.html">Privacy Policy</a>
+            </p>
+        </div>
+    </footer>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to 'dark'
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', currentTheme);
+        
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            const theme = htmlElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+</html>
