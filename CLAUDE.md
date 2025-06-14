@@ -91,6 +91,14 @@ The framework includes a systematic error ledger (`CONDUCTOR.md:241-275`):
 ❌ **Don't ignore error tracking** - P0/P1 errors must be logged
 ❌ **Don't break cross-links** - Maintain bidirectional linking
 
+## Journal Update Requirements
+**IMPORTANT**: Update JOURNAL.md regularly throughout our work sessions:
+- After completing any significant feature or fix
+- When encountering and resolving errors
+- At the end of each work session
+- When making architectural decisions
+- Format: What/Why/How/Issues/Result structure
+
 ## Current State
 - [x] CONDUCTOR.md template complete
 - [ ] Target project identification

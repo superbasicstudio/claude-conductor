@@ -335,6 +335,22 @@ For a more thorough initialization, ask Claude:
 
 **Note**: Claude sees the CLAUDE.md file automatically when it's in your codebase, but won't populate the templates unless asked. This one-time setup ensures your documentation is tailored to your specific project.
 
+### If You Already Have a CLAUDE.md File
+
+If Claude Conductor detects an existing CLAUDE.md file, it will preserve it and skip creating a new one. To ensure optimal integration with the Conductor framework, please manually add this section to your existing CLAUDE.md:
+
+```markdown
+## Journal Update Requirements
+**IMPORTANT**: Update JOURNAL.md regularly throughout our work sessions:
+- After completing any significant feature or fix
+- When encountering and resolving errors
+- At the end of each work session
+- When making architectural decisions
+- Format: What/Why/How/Issues/Result structure
+```
+
+This ensures Claude maintains a detailed development history in JOURNAL.md, which is a core feature of the Conductor framework.
+
 ## Framework Philosophy
 
 1. **Modular > Monolithic** - Separate concerns into focused files

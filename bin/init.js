@@ -169,7 +169,7 @@ async function initializeFramework(targetDir, options) {
   console.log('');
   console.log(chalk.blue.bold('[>] Copying template files...'));
   console.log('');
-  await copyTemplates(templatesDir, targetPath, options.force, options.full, newlyCreatedFiles);
+  const claudeMdSkipped = await copyTemplates(templatesDir, targetPath, options.force, options.full, newlyCreatedFiles);
   console.log('');
   
   // Analyze existing codebase if requested
@@ -219,6 +219,29 @@ async function initializeFramework(targetDir, options) {
   console.log(chalk.yellow('└─────────────────────────────────────────────────────────────────┘'));
   console.log('');
   
+  // Show CLAUDE.md update message if it was skipped
+  if (claudeMdSkipped && !options.force) {
+    console.log('');
+    console.log(chalk.blue('┌─────────────────────────────────────────────────────────────────┐'));
+    console.log(chalk.blue('│') + ' ' + chalk.blue.bold('ℹ️  EXISTING CLAUDE.md DETECTED') + '                                  ' + chalk.blue('│'));
+    console.log(chalk.blue('├─────────────────────────────────────────────────────────────────┤'));
+    console.log(chalk.blue('│') + ' Your existing CLAUDE.md was preserved. To work optimally with   ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + ' Claude Conductor, please add this section to your CLAUDE.md:    ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' ## Journal Update Requirements') + '                                  ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' **IMPORTANT**: Update JOURNAL.md regularly throughout our work') + '  ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' sessions:') + '                                                       ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' - After completing any significant feature or fix') + '               ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' - When encountering and resolving errors') + '                       ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' - At the end of each work session') + '                              ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' - When making architectural decisions') + '                          ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.white(' - Format: What/Why/How/Issues/Result structure') + '                 ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + ' This ensures Claude maintains a detailed development history! 📝 ' + chalk.blue('│'));
+    console.log(chalk.blue('└─────────────────────────────────────────────────────────────────┘'));
+    console.log('');
+  }
+  
   // Animated thank you
   await animateThankYou();
 }
@@ -238,6 +261,7 @@ async function animateThankYou() {
 
 async function copyTemplates(templatesDir, targetPath, force, full = false, newlyCreatedFiles) {
   let templateFiles = await glob('**/*.md', { cwd: templatesDir });
+  let claudeMdSkipped = false;
   
   // Filter templates based on --full flag
   if (!full) {
@@ -253,6 +277,9 @@ async function copyTemplates(templatesDir, targetPath, force, full = false, newl
     if (await fs.pathExists(targetFilePath)) {
       if (!force) {
         console.log(chalk.yellow(`[=] Skipping ${file} (already exists)`));
+        if (file === 'CLAUDE.md') {
+          claudeMdSkipped = true;
+        }
         continue;
       } else {
         console.log(chalk.red(`[!] Overwriting ${file}`));
@@ -268,6 +295,8 @@ async function copyTemplates(templatesDir, targetPath, force, full = false, newl
     await fs.copy(sourcePath, targetFilePath);
     console.log(chalk.green(`[+] Created ${file}`));
   }
+  
+  return claudeMdSkipped;
 }
 
 async function analyzeCodebase(targetPath, isDeepScan = false, newlyCreatedFiles, force) {
