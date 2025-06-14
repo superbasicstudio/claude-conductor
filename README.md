@@ -52,11 +52,11 @@ Create a comprehensive, interconnected scaffolded documentation system that help
 # Initialize with core templates (recommended)
 npx claude-conductor
 # Or use the shorthand
-npx claude-c
+npx claude-conduct
 
 # Initialize in a specific directory
 npx claude-conductor ./my-project
-npx claude-c /Users/thomas/projects/myapp
+npx claude-conduct /Users/thomas/projects/myapp
 
 # Initialize with all 12 documentation templates
 npx claude-conductor --full
@@ -68,7 +68,7 @@ npx claude-conductor --force
 npx claude-conductor --deepscan
 
 # Combine path and options
-npx claude-c ./docs --full --deepscan
+npx claude-conduct ./docs --full --deepscan
 ```
 
 ## What It Does
@@ -127,34 +127,34 @@ yarn global add claude-conductor
 bun add -g claude-conductor
 ```
 
-Once installed globally, you can run `claude-conductor` or `claude-c` from anywhere on your computer:
+Once installed globally, you can run `claude-conductor` or `claude-conduct` from anywhere on your computer:
 
 ```bash
 # Run from anywhere - no need to cd into the project first!
-claude-c /path/to/your/project
-claude-c ./my-project --full
-claude-c ~/Documents/myapp --deepscan
+claude-conduct /path/to/your/project
+claude-conduct ./my-project --full
+claude-conduct ~/Documents/myapp --deepscan
 
 # Or navigate to a project and run it there
 cd /path/to/your/project
-claude-c
+claude-conduct
 
 # Use with optional flags and paths:
-claude-c ./docs --full        # Create all templates in ./docs
-claude-c ./frontend --deepscan # Deep scan the frontend directory
-claude-c ../backend --force    # Force overwrite in parent's backend folder
+claude-conduct ./docs --full        # Create all templates in ./docs
+claude-conduct ./frontend --deepscan # Deep scan the frontend directory
+claude-conduct ../backend --force    # Force overwrite in parent's backend folder
 ```
 
 ### Option 3: Add to Project
 ```bash
-npm install --save-dev claude-conductonductor
+npm install --save-dev claude-conductor
 ```
 
 Add to package.json:
 ```json
 {
   "scripts": {
-    "docs:init": "claude-conductonductor"
+    "docs:init": "claude-conductor"
   }
 }
 ```
@@ -200,7 +200,7 @@ All default features plus:
 ## CLI Options
 
 ```bash
-claude-conductonductor [options] [target-dir]
+claude-conductor [options] [target-dir]
 
 Options:
   -V, --version      Output version number
@@ -375,11 +375,11 @@ Our documentation website (not the CLI tool) uses browser local storage solely t
 - 🚫 No cookies or tracking of any kind
 
 ### Open Source Transparency
-This entire codebase is open source. You can verify our privacy commitment by reviewing the source code at [github.com/superbasicstudio/claude-conductonductor](https://github.com/superbasicstudio/claude-conductonductor).
+This entire codebase is open source. You can verify our privacy commitment by reviewing the source code at [github.com/superbasicstudio/claude-conductor](https://github.com/superbasicstudio/claude-conductor).
 
-For our full privacy policy, visit [PRIVACY.md](https://github.com/superbasicstudio/claude-conductonductor/blob/main/PRIVACY.md).
+For our full privacy policy, visit [PRIVACY.md](https://github.com/superbasicstudio/claude-conductor/blob/main/PRIVACY.md).
 
-For terms of service, see [TERMS.md](https://github.com/superbasicstudio/claude-conductonductor/blob/main/TERMS.md).
+For terms of service, see [TERMS.md](https://github.com/superbasicstudio/claude-conductor/blob/main/TERMS.md).
 
 **Super Basic Studio, LLC** is committed to developer privacy. This tool is simply a collection of markdown templates designed to help Claude Code AI assistant better understand and navigate your codebase.
 
