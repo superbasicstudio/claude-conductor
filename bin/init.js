@@ -9,10 +9,21 @@ const readline = require('readline');
 
 const program = new Command();
 
+// Main command - Initialize documentation
 program
   .name('claude-conductor')
-  .description('Initialize Claude Code documentation framework in your project')
+  .description('Claude Conductor - Documentation framework for AI-assisted development')
   .version('1.0.0')
+  .option('-V, --version', 'output the version number')
+  .action(() => {
+    // If no subcommand, show help
+    program.outputHelp();
+  });
+
+// Init subcommand (default behavior)
+program
+  .command('init [target-dir]', { isDefault: true })
+  .description('Initialize documentation framework in your project')
   .argument('[target-dir]', 'Target directory (defaults to current directory)', '.')
   .option('-f, --force', 'Overwrite existing files')
   .option('--full', 'Create all 12 documentation templates (default: core templates only)')
@@ -36,6 +47,36 @@ The framework creates a complete documentation suite including:
   .action(async (targetDir, options) => {
     try {
       await initializeFramework(targetDir, options);
+    } catch (error) {
+      console.error(chalk.red('Error:'), error.message);
+      process.exit(1);
+    }
+  });
+
+// Vuln-scan subcommand
+program
+  .command('vuln-scan')
+  .description('Generate a security vulnerability scan prompt for Claude Code')
+  .option('-p, --path <path>', 'Path to scan (defaults to current directory)', '.')
+  .addHelpText('after', `
+This command generates a prompt for Claude Code to perform a security scan.
+
+Examples:
+  $ npx claude-conductor vuln-scan          # Scan current directory
+  $ npx claude-conduct vuln-scan            # Using shorthand
+  $ npx claude-conduct vuln-scan -p ./src   # Scan specific directory
+
+What it checks for:
+- Exposed .env files or API keys in code
+- Unsafe innerHTML usage that could lead to XSS
+- Missing .gitignore entries for sensitive files
+- Hardcoded credentials or secrets
+- Common security anti-patterns
+
+The scan is informational only and will not modify any code.`)
+  .action(async (options) => {
+    try {
+      await generateVulnScanPrompt(options);
     } catch (error) {
       console.error(chalk.red('Error:'), error.message);
       process.exit(1);
@@ -238,6 +279,8 @@ async function initializeFramework(targetDir, options) {
     console.log(chalk.blue('│') + chalk.white(' - Format: What/Why/How/Issues/Result structure') + '                 ' + chalk.blue('│'));
     console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
     console.log(chalk.blue('│') + ' This ensures Claude maintains a detailed development history! 📝 ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + '                                                                 ' + chalk.blue('│'));
+    console.log(chalk.blue('│') + chalk.gray(' For security scans, use: npx claude-conduct vuln-scan 🪄') + '        ' + chalk.blue('│'));
     console.log(chalk.blue('└─────────────────────────────────────────────────────────────────┘'));
     console.log('');
   }
@@ -754,6 +797,61 @@ async function checkExistingFiles(targetPath, full = false) {
   }
   
   return existingFiles;
+}
+
+async function generateVulnScanPrompt(options) {
+  const scanPath = path.resolve(options.path || '.');
+  
+  // Display header
+  console.log('');
+  console.log(chalk.magenta('┌─────────────────────────────────────────────────────────────────┐'));
+  console.log(chalk.magenta('│') + ' ' + chalk.magenta.bold('🪄 Conductor Security Vulnerability Scanner') + '                      ' + chalk.magenta('│'));
+  console.log(chalk.magenta('└─────────────────────────────────────────────────────────────────┘'));
+  console.log('');
+  
+  console.log(chalk.blue('[*] Generating security scan prompt for Claude Code...'));
+  console.log(chalk.gray(`Target path: ${scanPath}`));
+  console.log('');
+  
+  // Generate the prompt
+  const prompt = `Please perform a security vulnerability scan of the codebase at: ${scanPath}
+
+Check for:
+1. Exposed .env files or API keys in code
+2. Unsafe innerHTML usage that could lead to XSS
+3. Missing .gitignore entries for sensitive files
+4. Hardcoded credentials or secrets
+5. Common security anti-patterns
+
+IMPORTANT:
+- Only report CRITICAL security issues
+- Do not modify any code
+- Be silent if no issues are found
+- Present findings as warnings for review
+
+Start the scan with: "Conductor🪄 is scanning for vulnerabilities..."`;
+
+  // Display the prompt in a nice box
+  console.log(chalk.yellow('┌─────────────────────────────────────────────────────────────────┐'));
+  console.log(chalk.yellow('│') + ' ' + chalk.yellow.bold('📋 Copy this prompt to Claude Code:') + '                              ' + chalk.yellow('│'));
+  console.log(chalk.yellow('├─────────────────────────────────────────────────────────────────┤'));
+  
+  // Split prompt into lines and display
+  const lines = prompt.split('\n');
+  lines.forEach(line => {
+    const padding = 65 - line.length;
+    console.log(chalk.yellow('│') + ' ' + chalk.white(line) + ' '.repeat(Math.max(1, padding)) + chalk.yellow('│'));
+  });
+  
+  console.log(chalk.yellow('└─────────────────────────────────────────────────────────────────┘'));
+  console.log('');
+  
+  // Tips
+  console.log(chalk.gray('💡 Tips:'));
+  console.log(chalk.gray('- This scan is read-only and won\'t modify your code'));
+  console.log(chalk.gray('- Claude will only alert on critical security issues'));
+  console.log(chalk.gray('- Run this periodically to catch new vulnerabilities'));
+  console.log('');
 }
 
 program.parse();

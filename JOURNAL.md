@@ -1,5 +1,52 @@
 # Engineering Journal
 
+## 2025-01-14 18:30
+
+### Refactored Security Scanning to CLI Command
+- **What**: Changed security scanning from CLAUDE.md toggle to explicit CLI command
+- **Why**: User feedback - more obvious control and explicit user action required
+- **How**: Added `vuln-scan` subcommand to CLI that generates Claude Code prompts
+- **Issues**: None - cleaner separation of concerns
+- **Result**: Users now run `npx claude-conduct vuln-scan` to generate security scan prompts
+
+### CLI Command Structure Update
+- **What**: Restructured CLI to support multiple commands (init, vuln-scan)
+- **Why**: Better extensibility for future commands
+- **How**: Used commander.js subcommands with init as default
+- **Issues**: None
+- **Result**: Clean command structure with room for growth
+
+---
+
+## 2025-01-14 18:15
+
+### Security Scanning Feature Implementation
+- **What**: Added optional security scanning feature to CLAUDE.md with toggle control
+- **Why**: Help users identify critical security vulnerabilities without being intrusive
+- **How**: Added Security Scanning section with CONDUCTOR_SECURITY_SCAN toggle (enabled/disabled)
+- **Issues**: None - feature is informational only and never modifies code
+- **Result**: Claude can now perform periodic security scans branded as "Conductor🪄 is scanning for vulnerabilities"
+
+### Security Scan Checks Include:
+- Exposed .env files or API keys in code
+- Unsafe innerHTML usage (XSS risk)
+- Missing .gitignore entries for sensitive files
+- Hardcoded credentials or secrets
+- Common security anti-patterns
+
+---
+
+## 2025-01-14 18:00
+
+### CLAUDE.md Integration Instructions for Existing Files
+- **What**: Added detection and instructions for when CLAUDE.md already exists
+- **Why**: Users with existing CLAUDE.md files need to manually add journal requirements
+- **How**: Modified CLI to show blue info box with instructions, updated README
+- **Issues**: None - gracefully handles existing files without overwriting
+- **Result**: Clear guidance for users to integrate Conductor's journal system with existing CLAUDE.md
+
+---
+
 ## 2025-01-14 17:45
 
 ### GitHub Pages Setup and Documentation Updates

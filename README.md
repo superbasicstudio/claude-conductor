@@ -69,6 +69,11 @@ npx claude-conductor --deepscan
 
 # Combine path and options
 npx claude-conduct ./docs --full --deepscan
+
+# Run security vulnerability scan
+npx claude-conductor vuln-scan
+npx claude-conduct vuln-scan
+npx claude-conduct vuln-scan -p ./src  # Scan specific directory
 ```
 
 ## What It Does
@@ -197,8 +202,9 @@ All default features plus:
 - Links between errors and fixes
 - Resolution tracking
 
-## CLI Options
+## CLI Commands
 
+### Initialize Documentation (Default)
 ```bash
 claude-conductor [options] [target-dir]
 
@@ -210,6 +216,25 @@ Options:
   --no-analyze       Skip codebase analysis
   -h, --help         Display help
 ```
+
+### Security Vulnerability Scan 🪄
+```bash
+claude-conductor vuln-scan [options]
+claude-conduct vuln-scan [options]
+
+Options:
+  -p, --path <path>  Path to scan (defaults to current directory)
+  -h, --help         Display help
+```
+
+The `vuln-scan` command generates a prompt for Claude Code to perform a security scan of your codebase. It checks for:
+- Exposed .env files or API keys in code
+- Unsafe innerHTML usage that could lead to XSS
+- Missing .gitignore entries for sensitive files
+- Hardcoded credentials or secrets
+- Common security anti-patterns
+
+**Note**: This scan is informational only and will never modify your code.
 
 ## Example Output
 
@@ -350,6 +375,8 @@ If Claude Conductor detects an existing CLAUDE.md file, it will preserve it and 
 ```
 
 This ensures Claude maintains a detailed development history in JOURNAL.md, which is a core feature of the Conductor framework.
+
+**For Security Scans**: Use the `npx claude-conduct vuln-scan` command whenever you want to check for vulnerabilities.
 
 ## Framework Philosophy
 

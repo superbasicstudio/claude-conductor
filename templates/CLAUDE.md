@@ -51,6 +51,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ❌ **Don't [action]** - [Reason]  
 [List 5-6 critical mistakes]
 
+## Journal Update Requirements
+**IMPORTANT**: Update JOURNAL.md regularly throughout our work sessions:
+- After completing any significant feature or fix
+- When encountering and resolving errors
+- At the end of each work session
+- When making architectural decisions
+- Format: What/Why/How/Issues/Result structure
+
 ## Version History
 - **v1.0.0** - Initial release
 - **v1.1.0** - Feature added (see JOURNAL.md YYYY-MM-DD)  
