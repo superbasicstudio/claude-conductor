@@ -28,7 +28,7 @@ Claude Conductor makes **zero network requests** with the following exceptions:
 
 ## Website Local Storage
 
-Our documentation website (https://superbasicstudio.github.io/claude-conductor/) uses browser local storage for:
+Our documentation website ([https://superbasicstudio.github.io/claude-conductor/](https://superbasicstudio.github.io/claude-conductor/)) uses browser local storage for:
 
 - **Theme Preference**: We store your light/dark mode choice in your browser's local storage
 - **No Cookies**: We do not use cookies or any tracking technologies
