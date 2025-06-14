@@ -42,7 +42,7 @@
 > 
 > ---
 > 
-> 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! It's a friendly PSA about best practices. Think of it like wearing a seatbelt (backups) while driving on public roads (running scripts) - you're responsible for your own safety, but that doesn't mean you shouldn't enjoy the ride! 🚗✨
+> 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! These warnings are standard practice in open source. We're just being transparent about responsibilities - like how every tool comes with safety instructions. Follow the backup advice above and you'll be fine! 🛡️
 
 ---
 
