@@ -314,13 +314,13 @@ After running `npx claude-conductor`, your documentation templates contain place
 ### Option 1: Quick Setup (Recommended)
 Simply ask Claude:
 ```
-"Please review this codebase and update the CLAUDE.md and CONDUCTOR.md files with the actual project details"
+"Please review this codebase and update the CLAUDE.md and CONDUCTOR.md files with the actual project details. Also perform a security health check and list any potential vulnerabilities or concerns (like exposed .env files, API keys in code, missing .gitignore entries, outdated dependencies with known vulnerabilities, or insecure configurations) - just list them as warnings, don't fix anything."
 ```
 
 ### Option 2: Comprehensive Setup
 For a more thorough initialization, ask Claude:
 ```
-"Please thoroughly review this codebase, update CLAUDE.md with project context, and use CONDUCTOR.md as a guide to fill out all the documentation files. Also check for any syntax errors, bugs, or suggestions for improvement."
+"Please thoroughly review this codebase, update CLAUDE.md with project context, and use CONDUCTOR.md as a guide to fill out all the documentation files. Also check for any syntax errors, bugs, or suggestions for improvement. Additionally, perform a comprehensive security health check and list any potential vulnerabilities or concerns (like exposed .env files, API keys in code, missing .gitignore entries, outdated dependencies with known vulnerabilities, insecure configurations, or other security best practice violations) - just list them as warnings, don't fix anything."
 ```
 
 ### What Claude Will Do:
@@ -330,6 +330,8 @@ For a more thorough initialization, ask Claude:
 - ✅ Populate architecture, build, and API documentation
 - ✅ Create meaningful task templates based on your workflow
 - ✅ Set up proper cross-linking between documents
+- 🔍 **Security Health Check** (New): Scan for common vulnerabilities and security concerns
+- ⚠️ **Warning List**: Flag any security issues found (without making changes)
 
 **Note**: Claude sees the CLAUDE.md file automatically when it's in your codebase, but won't populate the templates unless asked. This one-time setup ensures your documentation is tailored to your specific project.
 

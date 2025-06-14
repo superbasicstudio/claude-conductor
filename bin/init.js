@@ -207,7 +207,13 @@ async function initializeFramework(targetDir, options) {
   console.log(chalk.yellow('│') + ' ask Claude Code:                                                ' + chalk.yellow('│'));
   console.log(chalk.yellow('│') + '                                                                 ' + chalk.yellow('│'));
   console.log(chalk.yellow('│') + chalk.cyan('  "Please review this codebase and update the CLAUDE.md') + '         ' + chalk.yellow('│'));
-  console.log(chalk.yellow('│') + chalk.cyan('   and CONDUCTOR.md files with the actual project details"') + '   ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   and CONDUCTOR.md files with the actual project details.') + '      ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   Also perform a security health check and list any') + '            ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   potential vulnerabilities or concerns (like exposed') + '          ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   .env files, API keys in code, missing .gitignore') + '            ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   entries, outdated dependencies with known vulnerabilities,') + '   ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   or insecure configurations) - just list them as warnings,') + '   ' + chalk.yellow('│'));
+  console.log(chalk.yellow('│') + chalk.cyan('   don\'t fix anything."') + '                                          ' + chalk.yellow('│'));
   console.log(chalk.yellow('│') + '                                                                 ' + chalk.yellow('│'));
   console.log(chalk.yellow('│') + ' This one-time setup ensures your docs match your project! 🚀   ' + chalk.yellow('│'));
   console.log(chalk.yellow('└─────────────────────────────────────────────────────────────────┘'));
