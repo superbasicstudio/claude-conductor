@@ -270,9 +270,11 @@ your-project/
     └── DEPLOY.md
 ```
 
-## Default vs Deep Scan Comparison
+## How Your Project's ARCHITECTURE.md Will Look
 
-### ARCHITECTURE.md with Default Scan:
+These are **EXAMPLES** showing how Claude Conductor populates ARCHITECTURE.md for a hypothetical React/Express project (not Claude Conductor's own dependencies):
+
+### Example: ARCHITECTURE.md with Default Scan
 ```markdown
 ## Tech Stack
 - **Language**: Node.js/npm
@@ -280,7 +282,7 @@ your-project/
 - **Line Count**: 5,432 total lines
 ```
 
-### ARCHITECTURE.md with --deepscan:
+### Example: ARCHITECTURE.md with --deepscan
 ```markdown
 ## Tech Stack
 - **React 18.2.0**
@@ -298,6 +300,8 @@ your-project/
 - GET /api/users/:id (src/routes/users.js)
 - GET /api/posts (src/routes/posts.js)
 ```
+
+**Note**: Claude Conductor itself only uses Commander, fs-extra, glob, and chalk. The above shows what YOUR project's ARCHITECTURE.md might contain.
 
 ## Best Practices
 

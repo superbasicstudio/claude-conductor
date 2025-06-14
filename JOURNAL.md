@@ -1,5 +1,16 @@
 # Engineering Journal
 
+## 2025-01-14 19:00
+
+### Clarified README Examples vs Actual Dependencies
+- **What**: Added clear labeling that Tech Stack examples are hypothetical, not Claude Conductor's deps
+- **Why**: User confusion - examples looked like actual Claude Conductor dependencies
+- **How**: Renamed section to "How Your Project's ARCHITECTURE.md Will Look" and added explicit notes
+- **Issues**: None
+- **Result**: Clear distinction that React/Express/etc are examples, Claude Conductor only uses Commander, fs-extra, glob, and chalk
+
+---
+
 ## 2025-01-14 18:45
 
 ### Renamed Command and Added Interactive Checkup Prompt

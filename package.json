@@ -1,6 +1,6 @@
 {
   "name": "claude-conductor",
-  "version": "1.0.5",
+  "version": "1.0.2",
   "description": "Modular documentation framework for AI-assisted development with Claude Code",
   "bin": {
     "claude-conductor": "bin/init.js",
@@ -52,13 +52,7 @@
   },
   "homepage": "https://github.com/superbasicstudio/claude-conductor#readme",
   "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/superbasicstudio"
-    },
-    {
-      "type": "patreon",
-      "url": "https://patreon.com/superbasicstudio"
-    }
+    { "type": "github", "url": "https://github.com/superbasicstudio" },
+    { "type": "patreon", "url": "https://patreon.com/superbasicstudio" }
   ]
 }
