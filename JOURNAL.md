@@ -1,5 +1,16 @@
 # Engineering Journal
 
+## 2025-01-14 19:15
+
+### Added Legal Disclaimer to README
+- **What**: Added "run at your own risk" disclaimer under the safety notice section
+- **Why**: Legal protection and clear user expectations
+- **How**: Added standard "as is" software disclaimer with no warranty language
+- **Issues**: None
+- **Result**: Users clearly informed that Super Basic Studio and maintainers are not responsible for issues
+
+---
+
 ## 2025-01-14 19:00
 
 ### Clarified README Examples vs Actual Dependencies

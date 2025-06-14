@@ -38,6 +38,8 @@
 > 
 > *Especially from someone you don't know!* 🕵️
 > 
+> **DISCLAIMER**: This software is provided "as is" without warranty of any kind. Super Basic Studio and the maintainers of Claude Conductor are not responsible for any issues, data loss, or damages that may occur from using this tool. By using Claude Conductor, you acknowledge that you run it at your own risk and take full responsibility for backing up your code and using proper version control.
+> 
 > ---
 > 
 > 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! It's a friendly PSA about best practices. Think of it like wearing a seatbelt - probably won't need it, but always good to have one... just in case. 🚗💥
