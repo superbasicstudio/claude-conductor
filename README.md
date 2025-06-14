@@ -42,7 +42,7 @@
 > 
 > ---
 > 
-> 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! It's a friendly PSA about best practices. Think of it like wearing a seatbelt - probably won't need it, but always good to have one... just in case. 🚗💥
+> 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! It's a friendly PSA about best practices. Think of it like wearing a seatbelt (backups) while driving on public roads (running scripts) - you're responsible for your own safety, but that doesn't mean you shouldn't enjoy the ride! 🚗✨
 
 ---
 
