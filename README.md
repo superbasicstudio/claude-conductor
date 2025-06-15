@@ -512,8 +512,6 @@ BSD 2-Clause © Super Basic Studio
 
 Made with love by [Super Basic Studio](https://superbasic.studio)
 
-Support this project on [Patreon](https://patreon.com/superbasicstudio)
-
 ## Keywords
 
 claude, claude code, documentation, ai development, conductor, framework, claude conductor, vibe coding, super basic studio
