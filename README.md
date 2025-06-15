@@ -29,20 +29,20 @@
 > [!IMPORTANT]
 > ## ⚠️ Open Source Project Notice
 > 
-> **This is open source software currently maintained by ONE individual in their free time** (which isn't much at the moment! 😅)
+> **This is open source software currently maintained by ONE individual in their free time** (which isn't much at the moment!)
 > 
 > While the code is tested thoroughly before releases to npm, you should **ALWAYS** have:
 > - ✅ A proper GitHub/Git strategy in place
 > - ✅ Regular backups of your work  
 > - ✅ Version control before running ANY script from the internet
 > 
-> *Especially from someone you don't know!* 🕵️
+> *Especially from someone you don't know!*
 > 
 > **DISCLAIMER**: This software is provided "as is" without warranty of any kind. Super Basic Studio and the maintainers of Claude Conductor are not responsible for any issues, data loss, or damages that may occur from using this tool. By using Claude Conductor, you acknowledge that you run it at your own risk and take full responsibility for backing up your code and using proper version control.
 > 
 > ---
 > 
-> 💡 **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! These warnings are standard practice in open source. We're just being transparent about responsibilities - like how every tool comes with safety instructions. Follow the backup advice above and you'll be fine! 🛡️
+> **Note for Vibe Coders & Open Source Newcomers:** This isn't meant to scare you away! These warnings are standard practice in open source. We're just being transparent about responsibilities - like how every tool comes with safety instructions. Follow the backup advice above and you'll be fine!
 
 ---
 
@@ -82,11 +82,11 @@ npx claude-conduct checkup -p ./src  # Check specific directory
 
 Claude Conductor creates a structured documentation framework that:
 
-- 📚 **Organizes** your project documentation into focused, interconnected modules
-- 🤖 **Optimizes** for AI navigation with line numbers, anchors, and keywords
-- 📝 **Tracks** development history with an auto-archiving journal system
-- 🚨 **Monitors** critical errors with a dedicated error ledger
-- 🔍 **Analyzes** your codebase to pre-populate documentation
+- **Organizes** your project documentation into focused, interconnected modules
+- **Optimizes** for AI navigation with line numbers, anchors, and keywords
+- **Tracks** development history with an auto-archiving journal system
+- **Monitors** critical errors with a dedicated error ledger
+- **Analyzes** your codebase to pre-populate documentation
 
 ## Documentation Templates
 
@@ -168,7 +168,7 @@ Add to package.json:
 
 ## Features
 
-### 🔍 Intelligent Codebase Analysis
+### Intelligent Codebase Analysis
 
 #### Default Analysis (Fast - 2-3 seconds)
 - Detects your tech stack automatically
@@ -198,7 +198,7 @@ All default features plus:
 - Tracks major changes, bug fixes, and decisions
 - Links to error tracking system
 
-### 🚨 Error Tracking
+### Error Tracking
 - P0/P1 critical error ledger
 - Systematic error ID format
 - Links between errors and fixes
@@ -219,7 +219,7 @@ Options:
   -h, --help         Display help
 ```
 
-### Security & Health Checkup 🪄
+### Security & Health Checkup
 ```bash
 claude-conductor checkup [options]
 claude-conduct checkup [options]
@@ -238,7 +238,7 @@ The `checkup` command generates a prompt for Claude Code to perform a security a
 
 **Note**: This checkup is informational only and will never modify your code.
 
-### Ultra-Safe Upgrade System 🔄
+### Ultra-Safe Upgrade System
 
 > [!WARNING]
 > **⚠️ EARLY ALPHA FEATURE - USE WITH EXTREME CAUTION**
@@ -251,7 +251,7 @@ The `checkup` command generates a prompt for Claude Code to perform a security a
 > - ✅ **Test on a copy of your project first**
 > - ✅ **Have a rollback plan ready**
 > 
-> This feature will be marked stable after more real-world usage. **You have been warned!** 🚨
+> This feature will be marked stable after more real-world usage. **You have been warned!**
 
 Claude Conductor features a bulletproof 3-step upgrade process that **guarantees zero data loss**:
 
@@ -407,7 +407,7 @@ When working with Claude Code:
 2. Updates happen organically during development
 3. Cross-links help Claude navigate efficiently
 
-## 🚀 Next Steps After Installation
+## Next Steps After Installation
 
 After running `npx claude-conductor`, your documentation templates contain placeholders. To populate them with your project details:
 
@@ -430,7 +430,7 @@ For a more thorough initialization, ask Claude:
 - ✅ Populate architecture, build, and API documentation
 - ✅ Create meaningful task templates based on your workflow
 - ✅ Set up proper cross-linking between documents
-- 🔍 **Security Health Check** (New): Scan for common vulnerabilities and security concerns
+- **Security Health Check** (New): Scan for common vulnerabilities and security concerns
 - ⚠️ **Warning List**: Flag any security issues found (without making changes)
 
 **Note**: Claude sees the CLAUDE.md file automatically when it's in your codebase, but won't populate the templates unless asked. This one-time setup ensures your documentation is tailored to your specific project.
@@ -466,7 +466,7 @@ We welcome contributions! See our [Contributing Guide](https://superbasicstudio.
 
 ## Privacy & Security
 
-### 🔒 Your Data Stays Private
+### Your Data Stays Private
 
 **Claude Conductor is a completely offline tool that:**
 - ✅ **Never collects or transmits any data**
@@ -490,8 +490,8 @@ We welcome contributions! See our [Contributing Guide](https://superbasicstudio.
 
 ### Website Local Storage
 Our documentation website (not the CLI tool) uses browser local storage solely to:
-- 💡 Remember your light/dark theme preference
-- 🔒 This data never leaves your browser
+- Remember your light/dark theme preference
+- This data never leaves your browser
 - 🚫 No cookies or tracking of any kind
 
 ### Open Source Transparency
@@ -509,7 +509,7 @@ MIT © Super Basic Studio
 
 ---
 
-Made with ❤️ by [Super Basic Studio](https://superbasic.studio)
+Made with love by [Super Basic Studio](https://superbasic.studio)
 
 Support this project on [Patreon](https://patreon.com/superbasicstudio)
 
