@@ -90,8 +90,10 @@ The checkup is informational only and will not modify any code.`)
 // Backup subcommand - Step 1 of upgrade process
 program
   .command('backup [target-dir]')
-  .description('Backup your JOURNAL.md and CLAUDE.md files before upgrade')
+  .description('⚠️ ALPHA: Backup your JOURNAL.md and CLAUDE.md files before upgrade')
   .addHelpText('after', `
+⚠️  WARNING: EARLY ALPHA FEATURE - Always backup your entire project first!
+
 This is Step 1 of the 3-step upgrade process:
 1. npx claude-conductor backup     (backup your data)
 2. npx claude-conductor upgrade --clean  (fresh install)
@@ -115,12 +117,14 @@ The backup is stored in ./conductor-backup/ and is completely safe.`)
 // Upgrade subcommand - Step 2 of upgrade process  
 program
   .command('upgrade [target-dir]')
-  .description('Clean reinstall of Claude Conductor (Step 2: Run backup first!)')
+  .description('⚠️ ALPHA: Clean reinstall of Claude Conductor (Step 2: Run backup first!)')
   .option('--clean', 'Perform clean reinstall (requires backup first)')
   .option('-f, --force', 'Force upgrade without checking for backup')
   .option('--full', 'Create all 12 documentation templates')
   .option('-y, --yes', 'Skip confirmation prompts')
   .addHelpText('after', `
+⚠️  WARNING: EARLY ALPHA FEATURE - This DELETES files! Always backup first!
+
 This is Step 2 of the 3-step upgrade process:
 1. npx claude-conductor backup     (backup your data) ✓
 2. npx claude-conductor upgrade --clean  (YOU ARE HERE)
@@ -145,8 +149,10 @@ Examples:
 // Restore subcommand - Step 3 of upgrade process
 program
   .command('restore [target-dir]')
-  .description('Restore your backed up files after upgrade (Step 3: Final step!)')
+  .description('⚠️ ALPHA: Restore your backed up files after upgrade (Step 3: Final step!)')
   .addHelpText('after', `
+⚠️  WARNING: EARLY ALPHA FEATURE - Verify backup exists before running!
+
 This is Step 3 of the 3-step upgrade process:
 1. npx claude-conductor backup     ✓
 2. npx claude-conductor upgrade --clean  ✓  
@@ -976,6 +982,12 @@ Start the checkup with: "Conductor🪄 is running a security checkup..."`;
 async function createUserBackup(targetPath) {
   const backupDir = path.join(targetPath, 'conductor-backup');
   
+  // Alpha warning
+  console.log(chalk.bgYellow.black.bold(' ⚠️  EARLY ALPHA FEATURE WARNING '));
+  console.log(chalk.yellow('This backup/restore upgrade system is NEW and EXPERIMENTAL.'));
+  console.log(chalk.yellow('Make sure you have a full backup of your entire project first!'));
+  console.log('');
+  
   console.log(chalk.cyan.bold('    Conductor Backup (Step 1/3)'));
   console.log(chalk.gray('    Safeguarding your work...'));
   console.log('');
@@ -1040,6 +1052,12 @@ async function createUserBackup(targetPath) {
 }
 
 async function upgradeClean(targetPath, options) {
+  // Alpha warning
+  console.log(chalk.bgRed.white.bold(' ⚠️  EARLY ALPHA FEATURE WARNING '));
+  console.log(chalk.red('This backup/restore upgrade system is NEW and EXPERIMENTAL.'));
+  console.log(chalk.red('This command will DELETE files! Ensure you have backups!'));
+  console.log('');
+  
   console.log(chalk.cyan.bold('    Conductor Clean Upgrade (Step 2/3)'));
   console.log(chalk.gray('    Fresh installation...'));
   console.log('');
@@ -1134,6 +1152,12 @@ async function upgradeClean(targetPath, options) {
 
 async function restoreUserBackup(targetPath) {
   const backupDir = path.join(targetPath, 'conductor-backup');
+  
+  // Alpha warning
+  console.log(chalk.bgYellow.black.bold(' ⚠️  EARLY ALPHA FEATURE WARNING '));
+  console.log(chalk.yellow('This backup/restore upgrade system is NEW and EXPERIMENTAL.'));
+  console.log(chalk.yellow('Verify your backup exists and is complete before proceeding!'));
+  console.log('');
   
   console.log(chalk.cyan.bold('    Conductor Restore (Step 3/3)'));
   console.log(chalk.gray('    Restoring your work...'));

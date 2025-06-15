@@ -240,6 +240,19 @@ The `checkup` command generates a prompt for Claude Code to perform a security a
 
 ### Ultra-Safe Upgrade System 🔄
 
+> [!WARNING]
+> **⚠️ EARLY ALPHA FEATURE - USE WITH EXTREME CAUTION**
+> 
+> The backup/restore upgrade system is **NEW and EXPERIMENTAL**. While extensively tested, it has not been used by many users in production yet.
+> 
+> **BEFORE USING THE UPGRADE SYSTEM:**
+> - ✅ **ALWAYS create a full backup of your entire project**
+> - ✅ **Commit all changes to Git first** 
+> - ✅ **Test on a copy of your project first**
+> - ✅ **Have a rollback plan ready**
+> 
+> This feature will be marked stable after more real-world usage. **You have been warned!** 🚨
+
 Claude Conductor features a bulletproof 3-step upgrade process that **guarantees zero data loss**:
 
 #### Step 1: Backup Your Data
