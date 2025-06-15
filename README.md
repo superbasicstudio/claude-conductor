@@ -500,6 +500,10 @@ This entire codebase is open source. You can verify our privacy commitment by re
 
 **Super Basic Studio, LLC** is committed to developer privacy. This tool is simply a collection of markdown templates designed to help Claude Code AI assistant better understand and navigate your codebase.
 
+For more details:
+- [Privacy Policy](https://github.com/superbasicstudio/claude-conductor/blob/main/PRIVACY.md)
+- [Terms of Service](https://github.com/superbasicstudio/claude-conductor/blob/main/TERMS.md)
+
 ## License
 
 BSD 2-Clause © Super Basic Studio
