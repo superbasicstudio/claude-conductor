@@ -462,7 +462,7 @@ This ensures Claude maintains a detailed development history in JOURNAL.md, whic
 
 ## Contributing
 
-We welcome contributions! See our [Contributing Guide](https://superbasicstudio.github.io/claude-conductor/contributing) for guidelines.
+We welcome contributions! See our [Contributing Guide](https://github.com/superbasicstudio/claude-conductor/blob/main/CONTRIBUTING.md) for guidelines.
 
 ## Privacy & Security
 
@@ -497,15 +497,12 @@ Our documentation website (not the CLI tool) uses browser local storage solely t
 ### Open Source Transparency
 This entire codebase is open source. You can verify our privacy commitment by reviewing the source code at [github.com/superbasicstudio/claude-conductor](https://github.com/superbasicstudio/claude-conductor).
 
-For our full privacy policy, visit our [Privacy Policy](https://superbasicstudio.github.io/claude-conductor/privacy).
-
-For terms of service, see our [Terms of Service](https://superbasicstudio.github.io/claude-conductor/terms).
 
 **Super Basic Studio, LLC** is committed to developer privacy. This tool is simply a collection of markdown templates designed to help Claude Code AI assistant better understand and navigate your codebase.
 
 ## License
 
-MIT © Super Basic Studio
+BSD 2-Clause © Super Basic Studio
 
 ---
 
