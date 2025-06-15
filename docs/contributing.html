@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Conductor - Documentation Framework for Claude Code</title>
-    <meta name="description" content="A lightweight, modular documentation framework designed for AI-assisted development with Claude Code command line.">
+    <title>Contributing - Claude Conductor</title>
     <style>
         :root {
             --primary-color: #0066cc;
@@ -17,9 +16,6 @@
             --link-hover: #0052a3;
             --header-bg: #ffffff;
             --shadow-color: rgba(0, 0, 0, 0.05);
-            --hero-gradient-start: #f5f7fa;
-            --hero-gradient-end: #c3cfe2;
-            --feature-bg: #ffffff;
         }
 
         [data-theme="dark"] {
@@ -33,9 +29,6 @@
             --link-hover: #80bfff;
             --header-bg: #242424;
             --shadow-color: rgba(0, 0, 0, 0.3);
-            --hero-gradient-start: #2a2a2a;
-            --hero-gradient-end: #1a1a1a;
-            --feature-bg: #242424;
         }
 
         * {
@@ -49,6 +42,9 @@
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--background);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
@@ -59,7 +55,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -79,12 +75,12 @@
         }
 
         .logo {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
         }
 
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
@@ -105,129 +101,94 @@
             color: var(--link-hover);
         }
 
-        .hero {
-            padding: 4rem 0;
-            text-align: center;
-            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+        .content {
+            flex: 1;
+            padding: 3rem 0;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary-color);
-        }
-
-        .hero .subtitle {
-            font-size: 1.25rem;
-            color: #6c757d;
-            margin-bottom: 2rem;
-        }
-
-        .hero .description {
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            color: var(--text-color);
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--link-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background-color: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .features {
-            padding: 4rem 0;
-        }
-
-        .features h2 {
-            text-align: center;
+        .content h1 {
             font-size: 2.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             color: var(--secondary-color);
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature {
-            background: var(--feature-bg);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px var(--shadow-color);
-            transition: transform 0.2s;
-        }
-
-        .feature:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature h3 {
-            font-size: 1.25rem;
+        .content h2 {
+            font-size: 1.75rem;
+            margin-top: 2rem;
             margin-bottom: 1rem;
             color: var(--secondary-color);
         }
 
-        .feature p {
-            color: #6c757d;
-        }
-
-        .install-section {
-            background-color: var(--header-bg);
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .install-section h2 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
+        .content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
             color: var(--secondary-color);
         }
 
-        .code-block {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 1rem;
+            margin-left: 2rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
             font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.1rem;
+        }
+
+        .content pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .content a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        .content strong {
+            font-weight: 600;
+        }
+
+        .notice {
+            background-color: var(--code-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .footer {
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
         }
 
         .theme-toggle {
@@ -254,38 +215,22 @@
             display: block;
         }
 
-        .footer {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
         .footer a {
-            color: white;
+            color: var(--link-color);
             text-decoration: none;
-            opacity: 0.8;
         }
 
         .footer a:hover {
-            opacity: 1;
-        }
-
-        .footer-links {
-            margin-bottom: 1rem;
-        }
-
-        .footer-links a {
-            margin: 0 1rem;
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
             .nav-links {
                 gap: 1rem;
+            }
+            
+            .content h1 {
+                font-size: 2rem;
             }
             
             .container {
@@ -311,7 +256,6 @@
                 <nav class="nav-links">
                     <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a>
                     <a href="https://www.npmjs.com/package/claude-conductor">npm</a>
-                    <a href="./contributing.html">Contributing</a>
                     <a href="./privacy.html">Privacy</a>
                     <a href="./terms.html">Terms</a>
                     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
@@ -335,74 +279,107 @@
         </div>
     </header>
 
-    <section class="hero">
+    <main class="content">
         <div class="container">
-            <h1>Claude Conductor</h1>
-            <p class="subtitle">for Claude Code command line</p>
-            <p class="description">
-                A lightweight, modular documentation framework designed for AI-assisted development. 
-                Create comprehensive, interconnected documentation that helps Claude Code understand and navigate your codebase effectively.
-            </p>
-            <div class="cta-buttons">
-                <a href="https://github.com/superbasicstudio/claude-conductor" class="btn btn-primary">View on GitHub</a>
-                <a href="https://www.npmjs.com/package/claude-conductor" class="btn btn-secondary">Install from npm</a>
+            <h1>Contributing to Claude Conductor</h1>
+            
+            <p>Thank you for your interest in contributing to Claude Conductor! We appreciate your willingness to help improve this project.</p>
+            
+            <div class="notice">
+                <h2>Important Notice</h2>
+                <p><strong>This is an open source project maintained on a best-effort basis.</strong> We do not maintain any specific timeline or commitment for:</p>
+                <ul>
+                    <li>Reviewing pull requests</li>
+                    <li>Responding to issues</li>
+                    <li>Accepting contributions</li>
+                    <li>Providing support</li>
+                </ul>
+                <p>We address contributions and issues as time allows. Your patience and understanding are appreciated.</p>
             </div>
-        </div>
-    </section>
+            
+            <h2>How to Contribute</h2>
+            
+            <h3>Reporting Issues</h3>
+            <ol>
+                <li>Check if the issue already exists</li>
+                <li>Create a new issue with a clear title and description</li>
+                <li>Include steps to reproduce the problem</li>
+                <li>Mention your environment (Node version, OS, etc.)</li>
+            </ol>
+            
+            <h3>Submitting Pull Requests</h3>
+            <ol>
+                <li>Fork the repository</li>
+                <li>Create a new branch for your feature/fix</li>
+                <li>Make your changes</li>
+                <li>Test your changes thoroughly</li>
+                <li>Submit a pull request with a clear description</li>
+            </ol>
+            
+            <h3>Code Guidelines</h3>
+            <ul>
+                <li>Keep changes focused and minimal</li>
+                <li>Follow the existing code style</li>
+                <li>Test your changes before submitting</li>
+                <li>Update documentation if needed</li>
+            </ul>
+            
+            <h3>What We're Looking For</h3>
+            <ul>
+                <li>Bug fixes</li>
+                <li>Documentation improvements</li>
+                <li>Performance enhancements</li>
+                <li>New features that align with the project's goals</li>
+            </ul>
+            
+            <h3>What We're NOT Looking For</h3>
+            <ul>
+                <li>Major architectural changes without prior discussion</li>
+                <li>Features that add significant complexity</li>
+                <li>Changes that break backward compatibility</li>
+                <li>Dependencies on external services</li>
+            </ul>
+            
+            <h2>Development Setup</h2>
+            
+            <pre><code># Clone the repository
+git clone https://github.com/superbasicstudio/claude-conductor.git
 
-    <section class="features">
-        <div class="container">
-            <h2>Why Claude Conductor?</h2>
-            <div class="feature-grid">
-                <div class="feature">
-                    <h3>🚀 Quick Setup</h3>
-                    <p>Initialize your documentation framework with a single command. No configuration required.</p>
-                </div>
-                <div class="feature">
-                    <h3>🧩 Modular Design</h3>
-                    <p>12 interconnected documentation templates that grow with your project's needs.</p>
-                </div>
-                <div class="feature">
-                    <h3>🤖 AI-Optimized</h3>
-                    <p>Designed specifically for Claude Code to understand your codebase context and architecture.</p>
-                </div>
-                <div class="feature">
-                    <h3>🔒 Privacy First</h3>
-                    <p>Runs entirely locally. No data collection, no external servers, no tracking.</p>
-                </div>
-                <div class="feature">
-                    <h3>📊 Smart Analysis</h3>
-                    <p>Automatically analyzes your codebase structure and updates documentation accordingly.</p>
-                </div>
-                <div class="feature">
-                    <h3>⚡ Lightweight</h3>
-                    <p>Simple markdown files that integrate seamlessly with your existing workflow.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+# Install dependencies
+npm install
 
-    <section class="install-section">
-        <div class="container">
-            <h2>Get Started in Seconds</h2>
-            <div class="code-block">
-                npx claude-conductor
-            </div>
+# Run tests
+npm test
+
+# Run the CLI locally
+node index.js</code></pre>
+            
+            <h2>Testing</h2>
+            
+            <p>Please ensure all existing tests pass and add tests for new functionality when applicable.</p>
+            
+            <h2>License</h2>
+            
+            <p>By contributing to Claude Conductor, you agree that your contributions will be licensed under the BSD 2-Clause License.</p>
+            
+            <h2>Questions?</h2>
+            
+            <p>Feel free to <a href="https://github.com/superbasicstudio/claude-conductor/issues">open an issue</a> for discussion, but please remember that responses may be delayed.</p>
+            
+            <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+            
+            <p style="text-align: center;"><strong>Thank you for contributing to Claude Conductor!</strong></p>
         </div>
-    </section>
+    </main>
 
     <footer class="footer">
         <div class="container">
-            <div class="footer-links">
-                <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a>
-                <a href="https://www.npmjs.com/package/claude-conductor">npm</a>
-                <a href="./contributing.html">Contributing</a>
-                <a href="./privacy.html">Privacy Policy</a>
-                <a href="./terms.html">Terms of Service</a>
-            </div>
             <p>© 2025 <a href="https://superbasic.studio" target="_blank" rel="noopener noreferrer">Super Basic Studio, LLC</a>. All rights reserved.</p>
-            <p style="margin-top: 1rem; opacity: 0.8;">
-                Made with ❤️ by <a href="https://superbasic.studio">Super Basic Studio</a>
+            <p>
+                <a href="https://github.com/superbasicstudio/claude-conductor">GitHub</a> • 
+                <a href="https://www.npmjs.com/package/claude-conductor">npm</a> • 
+                <a href="./privacy.html">Privacy Policy</a> • 
+                <a href="./terms.html">Terms of Service</a>
             </p>
         </div>
     </footer>
