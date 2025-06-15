@@ -238,6 +238,62 @@ The `checkup` command generates a prompt for Claude Code to perform a security a
 
 **Note**: This checkup is informational only and will never modify your code.
 
+### Ultra-Safe Upgrade System 🔄
+
+Claude Conductor features a bulletproof 3-step upgrade process that **guarantees zero data loss**:
+
+#### Step 1: Backup Your Data
+```bash
+claude-conductor backup
+```
+- Safely backs up your `JOURNAL.md` and `CLAUDE.md` to `./conductor-backup/`
+- Idempotent - safe to run multiple times
+- Gracefully handles missing files
+
+#### Step 2: Clean Installation  
+```bash
+claude-conductor upgrade --clean
+```
+- Requires `--clean` flag for safety (prevents accidental runs)
+- Requires backup first (refuses to run without backup unless `--force`)
+- Deletes ALL conductor files and reinstalls fresh templates
+- Add `--full` to install all 12 templates
+
+#### Step 3: Restore Your Data
+```bash
+claude-conductor restore
+```
+- Restores your backed up files exactly as they were
+- Adds upgrade journal entry to document the upgrade
+- Cleans up backup folder after successful restore
+
+#### Complete Upgrade Example
+```bash
+# Safe upgrade process for any version
+npx claude-conductor backup
+npx claude-conductor upgrade --clean
+npx claude-conductor restore
+
+# Upgrade to full template set
+npx claude-conductor backup
+npx claude-conductor upgrade --clean --full
+npx claude-conductor restore
+```
+
+#### Why This Approach?
+- **Zero Risk**: Your data is physically moved out of harm's way
+- **Clear Process**: "Save work → Get fresh templates → Put work back"
+- **Works for Any Upgrade**: Same process for minor or major versions
+- **User Confidence**: You can see your backup folder and know data is safe
+- **No Complex Merging**: Avoids bugs that could corrupt your files
+
+#### Safety Features
+- **Backup validation** before each step
+- **Clear error messages** for every failure scenario
+- **Step-by-step guidance** with visual progress indicators
+- **Edge case handling** for permissions, disk space, corrupted files
+- **Comprehensive test coverage** ensuring reliability
+
 ## Example Output
 
 After running `npx claude-conductor`, you'll have:

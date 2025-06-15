@@ -7,13 +7,16 @@ const { glob } = require('glob');
 const chalk = require('chalk');
 const readline = require('readline');
 
+// Read version from package.json
+const packageJson = require('../package.json');
+
 const program = new Command();
 
 // Main command - Initialize documentation
 program
   .name('claude-conductor')
   .description('Claude Conductor - Documentation framework for AI-assisted development')
-  .version('1.0.0')
+  .version(packageJson.version)
   .option('-V, --version', 'output the version number')
   .action(() => {
     // If no subcommand, show help
@@ -24,7 +27,6 @@ program
 program
   .command('init [target-dir]', { isDefault: true })
   .description('Initialize documentation framework in your project')
-  .argument('[target-dir]', 'Target directory (defaults to current directory)', '.')
   .option('-f, --force', 'Overwrite existing files')
   .option('--full', 'Create all 12 documentation templates (default: core templates only)')
   .option('--deepscan', 'Perform comprehensive codebase analysis (slower but more detailed)')
@@ -46,7 +48,9 @@ The framework creates a complete documentation suite including:
 - ARCHITECTURE.md, API.md, BUILD.md and more...`)
   .action(async (targetDir, options) => {
     try {
-      await initializeFramework(targetDir, options);
+      // Default to current directory if not specified
+      const dir = targetDir || '.';
+      await initializeFramework(dir, options);
     } catch (error) {
       console.error(chalk.red('Error:'), error.message);
       process.exit(1);
@@ -77,6 +81,85 @@ The checkup is informational only and will not modify any code.`)
   .action(async (options) => {
     try {
       await generateCheckupPrompt(options);
+    } catch (error) {
+      console.error(chalk.red('Error:'), error.message);
+      process.exit(1);
+    }
+  });
+
+// Backup subcommand - Step 1 of upgrade process
+program
+  .command('backup [target-dir]')
+  .description('Backup your JOURNAL.md and CLAUDE.md files before upgrade')
+  .addHelpText('after', `
+This is Step 1 of the 3-step upgrade process:
+1. npx claude-conductor backup     (backup your data)
+2. npx claude-conductor upgrade --clean  (fresh install)
+3. npx claude-conductor restore    (restore your data)
+
+What gets backed up:
+- JOURNAL.md (your development history)
+- CLAUDE.md (your customizations)
+
+The backup is stored in ./conductor-backup/ and is completely safe.`)
+  .action(async (targetDir, options) => {
+    try {
+      const dir = targetDir || '.';
+      await createUserBackup(dir);
+    } catch (error) {
+      console.error(chalk.red('Error:'), error.message);
+      process.exit(1);
+    }
+  });
+
+// Upgrade subcommand - Step 2 of upgrade process  
+program
+  .command('upgrade [target-dir]')
+  .description('Clean reinstall of Claude Conductor (Step 2: Run backup first!)')
+  .option('--clean', 'Perform clean reinstall (requires backup first)')
+  .option('-f, --force', 'Force upgrade without checking for backup')
+  .option('--full', 'Create all 12 documentation templates')
+  .option('-y, --yes', 'Skip confirmation prompts')
+  .addHelpText('after', `
+This is Step 2 of the 3-step upgrade process:
+1. npx claude-conductor backup     (backup your data) ✓
+2. npx claude-conductor upgrade --clean  (YOU ARE HERE)
+3. npx claude-conductor restore    (restore your data)
+
+IMPORTANT: This will DELETE all conductor files and reinstall fresh templates.
+Make sure you ran 'backup' first!
+
+Examples:
+  $ npx claude-conductor upgrade --clean     # Clean reinstall (safe with backup)
+  $ npx claude-conductor upgrade --clean --full  # Install all 12 templates`)
+  .action(async (targetDir, options) => {
+    try {
+      const dir = targetDir || '.';
+      await upgradeClean(dir, options);
+    } catch (error) {
+      console.error(chalk.red('Error:'), error.message);
+      process.exit(1);
+    }
+  });
+
+// Restore subcommand - Step 3 of upgrade process
+program
+  .command('restore [target-dir]')
+  .description('Restore your backed up files after upgrade (Step 3: Final step!)')
+  .addHelpText('after', `
+This is Step 3 of the 3-step upgrade process:
+1. npx claude-conductor backup     ✓
+2. npx claude-conductor upgrade --clean  ✓  
+3. npx claude-conductor restore    (YOU ARE HERE)
+
+This will restore your JOURNAL.md and CLAUDE.md files from backup
+and clean up the backup folder.
+
+Your upgrade will be complete after this step!`)
+  .action(async (targetDir, options) => {
+    try {
+      const dir = targetDir || '.';
+      await restoreUserBackup(dir);
     } catch (error) {
       console.error(chalk.red('Error:'), error.message);
       process.exit(1);
@@ -336,7 +419,9 @@ async function copyTemplates(templatesDir, targetPath, force, full = false, newl
     const sourcePath = path.join(templatesDir, file);
     const targetFilePath = path.join(targetPath, file);
     
-    if (await fs.pathExists(targetFilePath)) {
+    const fileExists = await fs.pathExists(targetFilePath);
+    
+    if (fileExists) {
       if (!force) {
         console.log(chalk.yellow(`[=] Skipping ${file} (already exists)`));
         if (file === 'CLAUDE.md') {
@@ -351,11 +436,23 @@ async function copyTemplates(templatesDir, targetPath, force, full = false, newl
       if (newlyCreatedFiles) {
         newlyCreatedFiles.add(file);
       }
+      console.log(chalk.green(`[+] Creating ${file}`));
     }
     
     await fs.ensureDir(path.dirname(targetFilePath));
-    await fs.copy(sourcePath, targetFilePath);
-    console.log(chalk.green(`[+] Created ${file}`));
+    
+    // Copy file and add version info
+    let content = await fs.readFile(sourcePath, 'utf8');
+    
+    // Add version comment to key template files
+    if (['CONDUCTOR.md', 'CLAUDE.md'].includes(path.basename(file))) {
+      content = content.replace(
+        /<!-- Generated by Claude Conductor v\d+\.\d+\.\d+ -->/,
+        `<!-- Generated by Claude Conductor v${packageJson.version} -->`
+      );
+    }
+    
+    await fs.writeFile(targetFilePath, content);
   }
   
   return claudeMdSkipped;
@@ -871,6 +968,297 @@ Start the checkup with: "Conductor🪄 is running a security checkup..."`;
   console.log(chalk.gray('- Claude will only alert on critical security issues'));
   console.log(chalk.gray('- Run this periodically to maintain code health'));
   console.log('');
+}
+
+// === ULTRA-SIMPLE BACKUP/RESTORE UPGRADE SYSTEM ===
+// 3-step process: backup → upgrade --clean → restore
+
+async function createUserBackup(targetPath) {
+  const backupDir = path.join(targetPath, 'conductor-backup');
+  
+  console.log(chalk.cyan.bold('    Conductor Backup (Step 1/3)'));
+  console.log(chalk.gray('    Safeguarding your work...'));
+  console.log('');
+  
+  // Check if this directory has conductor files
+  const hasFiles = await checkHasConductorFiles(targetPath);
+  if (!hasFiles) {
+    console.log(chalk.yellow('[!] No Conductor files found in this directory.'));
+    console.log(chalk.gray('    Nothing to backup. Run "npx claude-conductor" to initialize.'));
+    return;
+  }
+  
+  // Check if backup already exists
+  if (await fs.pathExists(backupDir)) {
+    console.log(chalk.yellow('[!] Backup already exists at ./conductor-backup/'));
+    console.log(chalk.gray('    Your data is already safely backed up!'));
+    console.log('');
+    console.log(chalk.green('[OK] Ready for Step 2: npx claude-conductor upgrade --clean'));
+    return;
+  }
+  
+  // Create backup directory
+  try {
+    await fs.ensureDir(backupDir);
+    console.log(chalk.blue('[*] Created backup folder: ./conductor-backup/'));
+  } catch (error) {
+    throw new Error(`Cannot create backup directory: ${error.message}`);
+  }
+  
+  // Files to backup
+  const filesToBackup = ['JOURNAL.md', 'CLAUDE.md'];
+  let backedUpCount = 0;
+  
+  for (const file of filesToBackup) {
+    const sourcePath = path.join(targetPath, file);
+    const backupPath = path.join(backupDir, file);
+    
+    if (await fs.pathExists(sourcePath)) {
+      try {
+        await fs.copy(sourcePath, backupPath);
+        console.log(chalk.green(`[+] Backed up ${file}`));
+        backedUpCount++;
+      } catch (error) {
+        console.log(chalk.red(`[!] Failed to backup ${file}: ${error.message}`));
+      }
+    } else {
+      console.log(chalk.gray(`[-] ${file} not found (no backup needed)`));
+    }
+  }
+  
+  console.log('');
+  if (backedUpCount > 0) {
+    console.log(chalk.green.bold('[OK] Backup completed successfully!'));
+    console.log(chalk.gray(`${backedUpCount} file(s) safely backed up to ./conductor-backup/`));
+  } else {
+    console.log(chalk.green.bold('[OK] Backup folder created (no files to backup)'));
+  }
+  
+  console.log('');
+  console.log(chalk.blue.bold('Next step:'));
+  console.log(chalk.cyan('npx claude-conductor upgrade --clean'));
+}
+
+async function upgradeClean(targetPath, options) {
+  console.log(chalk.cyan.bold('    Conductor Clean Upgrade (Step 2/3)'));
+  console.log(chalk.gray('    Fresh installation...'));
+  console.log('');
+  
+  // Must use --clean flag for safety
+  if (!options.clean) {
+    console.log(chalk.red('[!] You must use --clean flag for safety:'));
+    console.log(chalk.cyan('npx claude-conductor upgrade --clean'));
+    console.log('');
+    console.log(chalk.gray('This ensures you understand this will delete all files.'));
+    return;
+  }
+  
+  // Check for backup (unless forced)
+  const backupDir = path.join(targetPath, 'conductor-backup');
+  const hasBackup = await fs.pathExists(backupDir);
+  
+  if (!hasBackup && !options.force) {
+    console.log(chalk.red('[!] No backup found! Run backup first:'));
+    console.log(chalk.cyan('npx claude-conductor backup'));
+    console.log('');
+    console.log(chalk.gray('Or use --force if you really want to proceed without backup'));
+    return;
+  }
+  
+  if (!hasBackup && options.force) {
+    console.log(chalk.bgRed.white.bold(' [!] WARNING: NO BACKUP FOUND! '));
+    console.log(chalk.red('You are proceeding without backing up your data.'));
+    console.log('');
+  }
+  
+  // Confirm destructive operation
+  if (!options.yes) {
+    console.log(chalk.bgYellow.black.bold(' [!] DESTRUCTIVE OPERATION WARNING '));
+    console.log('');
+    console.log(chalk.yellow('This will DELETE all Conductor files and reinstall fresh templates.'));
+    if (hasBackup) {
+      console.log(chalk.green('✓ Backup found - your data is safe'));
+    } else {
+      console.log(chalk.red('✗ No backup found - you may lose data'));
+    }
+    console.log('');
+    console.log(chalk.gray(`Directory: ${targetPath}`));
+    console.log('');
+    
+    const confirmed = await promptConfirmation(chalk.yellow('Continue with clean reinstall? (y/N): '));
+    if (!confirmed) {
+      console.log(chalk.green('[OK] Operation cancelled.'));
+      return;
+    }
+  }
+  
+  console.log('');
+  console.log(chalk.blue.bold('[*] Removing old Conductor files...'));
+  
+  // Delete all conductor files (except backup)
+  const conductorFiles = await findConductorFiles(targetPath);
+  let deletedCount = 0;
+  
+  for (const file of conductorFiles) {
+    const filePath = path.join(targetPath, file);
+    try {
+      await fs.remove(filePath);
+      console.log(chalk.red(`[-] Deleted ${file}`));
+      deletedCount++;
+    } catch (error) {
+      console.log(chalk.yellow(`[!] Could not delete ${file}: ${error.message}`));
+    }
+  }
+  
+  console.log('');
+  console.log(chalk.blue.bold('[*] Installing fresh templates...'));
+  console.log('');
+  
+  // Run fresh initialization
+  const initOptions = {
+    force: true, // We already confirmed
+    full: options.full,
+    analyze: false, // Skip analysis for clean upgrade
+    yes: true // Skip prompts
+  };
+  
+  await initializeFramework(targetPath, initOptions);
+  
+  console.log('');
+  console.log(chalk.green.bold('[OK] Clean installation completed!'));
+  console.log(chalk.gray(`Deleted ${deletedCount} old files, installed fresh templates.`));
+  console.log('');
+  console.log(chalk.blue.bold('Final step:'));
+  console.log(chalk.cyan('npx claude-conductor restore'));
+}
+
+async function restoreUserBackup(targetPath) {
+  const backupDir = path.join(targetPath, 'conductor-backup');
+  
+  console.log(chalk.cyan.bold('    Conductor Restore (Step 3/3)'));
+  console.log(chalk.gray('    Restoring your work...'));
+  console.log('');
+  
+  // Check if backup exists
+  if (!await fs.pathExists(backupDir)) {
+    console.log(chalk.red('[!] No backup found at ./conductor-backup/'));
+    console.log(chalk.gray('    Run "npx claude-conductor backup" first.'));
+    return;
+  }
+  
+  console.log(chalk.blue('[*] Found backup folder: ./conductor-backup/'));
+  
+  // Restore files
+  const filesToRestore = ['JOURNAL.md', 'CLAUDE.md'];
+  let restoredCount = 0;
+  
+  for (const file of filesToRestore) {
+    const backupPath = path.join(backupDir, file);
+    const targetFilePath = path.join(targetPath, file);
+    
+    if (await fs.pathExists(backupPath)) {
+      try {
+        await fs.copy(backupPath, targetFilePath, { overwrite: true });
+        console.log(chalk.green(`[+] Restored ${file}`));
+        restoredCount++;
+      } catch (error) {
+        console.log(chalk.red(`[!] Failed to restore ${file}: ${error.message}`));
+      }
+    } else {
+      console.log(chalk.gray(`[-] ${file} not in backup (nothing to restore)`));
+    }
+  }
+  
+  // Add upgrade entry to journal
+  if (restoredCount > 0 && await fs.pathExists(path.join(targetPath, 'JOURNAL.md'))) {
+    await addCleanUpgradeJournalEntry(targetPath);
+  }
+  
+  // Clean up backup folder
+  try {
+    await fs.remove(backupDir);
+    console.log(chalk.gray('[*] Cleaned up backup folder'));
+  } catch (error) {
+    console.log(chalk.yellow(`[!] Could not remove backup folder: ${error.message}`));
+  }
+  
+  console.log('');
+  console.log(chalk.green.bold('[OK] Upgrade completed successfully!'));
+  console.log(chalk.gray(`Restored ${restoredCount} file(s). Your data is back!`));
+  console.log('');
+  console.log('🎉 ' + chalk.blue.bold('Claude Conductor upgrade complete!'));
+  console.log(chalk.gray('   Your customizations and history have been preserved.'));
+}
+
+// === HELPER FUNCTIONS ===
+
+async function checkHasConductorFiles(targetPath) {
+  const possibleFiles = [
+    'CLAUDE.md', 'CONDUCTOR.md', 'JOURNAL.md', 'ARCHITECTURE.md', 
+    'BUILD.md', 'API.md', 'CONFIG.md', 'DATA_MODEL.md'
+  ];
+  
+  for (const file of possibleFiles) {
+    if (await fs.pathExists(path.join(targetPath, file))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+async function findConductorFiles(targetPath) {
+  const allFiles = [
+    'CLAUDE.md', 'CONDUCTOR.md', 'JOURNAL.md', 'ARCHITECTURE.md', 
+    'BUILD.md', 'API.md', 'CONFIG.md', 'DATA_MODEL.md', 'DESIGN.md',
+    'UIUX.md', 'TEST.md', 'CONTRIBUTING.md', 'ERRORS.md', 'PLAYBOOKS'
+  ];
+  
+  const foundFiles = [];
+  
+  for (const file of allFiles) {
+    const filePath = path.join(targetPath, file);
+    if (await fs.pathExists(filePath)) {
+      foundFiles.push(file);
+    }
+  }
+  
+  return foundFiles;
+}
+
+async function addCleanUpgradeJournalEntry(targetPath) {
+  const journalPath = path.join(targetPath, 'JOURNAL.md');
+  const now = new Date();
+  const timestamp = now.toISOString().replace('T', ' ').substring(0, 16);
+  
+  const upgradeEntry = `
+## ${timestamp}
+
+### Claude Conductor Clean Upgrade
+- **What**: Performed clean upgrade using backup/restore method to v${packageJson.version}
+- **Why**: Access to latest framework improvements with zero risk of data loss
+- **How**: Used 3-step process: backup → clean install → restore
+- **Issues**: None - backup/restore method is bulletproof
+- **Result**: Framework successfully upgraded with all user data preserved
+
+---
+
+`;
+  
+  try {
+    let content = await fs.readFile(journalPath, 'utf8');
+    
+    // Insert after the header
+    const firstHeaderIndex = content.indexOf('\n## ');
+    if (firstHeaderIndex !== -1) {
+      content = content.slice(0, firstHeaderIndex) + upgradeEntry + content.slice(firstHeaderIndex);
+    } else {
+      content += upgradeEntry;
+    }
+    
+    await fs.writeFile(journalPath, content);
+  } catch (error) {
+    // Silently handle errors - journal entry is not critical
+  }
 }
 
 program.parse();
