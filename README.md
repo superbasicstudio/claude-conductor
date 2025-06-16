@@ -108,6 +108,8 @@ npx claude-conduct checkup -p ./src  # Check specific directory
 
 ## What It Does
 
+[⬆ Back to top](#table-of-contents)
+
 Claude Conductor creates a structured documentation framework that:
 
 - **Organizes** your project documentation into focused, interconnected modules
@@ -118,6 +120,8 @@ Claude Conductor creates a structured documentation framework that:
 - **Manages** active tasks with phase tracking and context preservation (NEW: TASKS.md)
 
 ## Documentation Templates
+
+[⬆ Back to top](#table-of-contents)
 
 ### Core Templates (Default)
 - **CONDUCTOR.md** - Master navigation hub and framework reference
@@ -140,6 +144,8 @@ All core templates plus:
 - **TASKS.md** - Active task management and phase tracking
 
 ## Installation Options
+
+[⬆ Back to top](#table-of-contents)
 
 ### Option 1: npx (Recommended)
 ```bash
@@ -198,6 +204,8 @@ Add to package.json:
 
 ## Features
 
+[⬆ Back to top](#table-of-contents)
+
 ### Intelligent Codebase Analysis
 
 #### Default Analysis (Fast - 2-3 seconds)
@@ -235,6 +243,8 @@ All default features plus:
 - Resolution tracking
 
 ## CLI Commands
+
+[⬆ Back to top](#table-of-contents)
 
 ### Initialize Documentation (Default)
 ```bash
@@ -339,6 +349,8 @@ npx claude-conductor restore
 
 ## Example Output
 
+[⬆ Back to top](#table-of-contents)
+
 After running `npx claude-conductor`, you'll have:
 
 ```
@@ -373,6 +385,8 @@ your-project/
 
 ## How Your Project's ARCHITECTURE.md Will Look
 
+[⬆ Back to top](#table-of-contents)
+
 These are **EXAMPLES** showing how Claude Conductor populates ARCHITECTURE.md for a hypothetical React/Express project (not Claude Conductor's own dependencies):
 
 ### Example: ARCHITECTURE.md with Default Scan
@@ -406,6 +420,8 @@ These are **EXAMPLES** showing how Claude Conductor populates ARCHITECTURE.md fo
 
 ## Best Practices
 
+[⬆ Back to top](#table-of-contents)
+
 ### Start Lean
 Begin with core templates and let your documentation grow organically:
 ```bash
@@ -438,6 +454,8 @@ When working with Claude Code:
 3. Cross-links help Claude navigate efficiently
 
 ## Next Steps After Installation
+
+[⬆ Back to top](#table-of-contents)
 
 After running `npx claude-conductor`, your documentation templates contain placeholders. To populate them with your project details:
 
@@ -485,6 +503,8 @@ This ensures Claude maintains a detailed development history in JOURNAL.md, whic
 
 ## Framework Philosophy
 
+[⬆ Back to top](#table-of-contents)
+
 1. **Modular > Monolithic** - Separate concerns into focused files
 2. **Practical > Theoretical** - Include real examples and patterns
 3. **Maintained > Stale** - Regular updates through development
@@ -492,9 +512,13 @@ This ensures Claude maintains a detailed development history in JOURNAL.md, whic
 
 ## Contributing
 
+[⬆ Back to top](#table-of-contents)
+
 We welcome contributions! See our [Contributing Guide](https://github.com/superbasicstudio/claude-conductor/blob/main/CONTRIBUTING.md) for guidelines.
 
 ## Privacy & Security
+
+[⬆ Back to top](#table-of-contents)
 
 ### Your Data Stays Private
 
@@ -535,6 +559,8 @@ For more details:
 - [Terms of Service](https://github.com/superbasicstudio/claude-conductor/blob/main/TERMS.md)
 
 ## License
+
+[⬆ Back to top](#table-of-contents)
 
 BSD 2-Clause © Super Basic Studio
 
