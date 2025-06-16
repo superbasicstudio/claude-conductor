@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Claude Conductor Documentation
+    url: https://github.com/superbasicstudio/claude-conductor/blob/main/README.md
+    about: Please read the documentation before opening an issue
+  - name: Contributing Guidelines
+    url: https://github.com/superbasicstudio/claude-conductor/blob/main/CONTRIBUTING.md
+    about: Want to contribute? Start here!
+  - name: Community Discussions
+    url: https://github.com/superbasicstudio/claude-conductor/discussions
+    about: Ask questions and discuss ideas with the community
