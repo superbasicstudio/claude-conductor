@@ -48,6 +48,34 @@
 
 Create a comprehensive, interconnected scaffolded documentation system that helps Claude Code understand and navigate your codebase more effectively, and retain better context.
 
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [What It Does](#what-it-does)
+- [Documentation Templates](#documentation-templates)
+  - [Core Templates](#core-templates-default)
+  - [Full Template Set](#full-template-set---full-flag)
+- [Installation Options](#installation-options)
+- [Features](#features)
+  - [Intelligent Codebase Analysis](#intelligent-codebase-analysis)
+  - [Modular Documentation](#-modular-documentation)
+  - [Development Journal](#-development-journal)
+  - [Error Tracking](#error-tracking)
+- [CLI Commands](#cli-commands)
+- [Example Output](#example-output)
+- [Best Practices](#best-practices)
+- [Next Steps After Installation](#next-steps-after-installation)
+- [Framework Philosophy](#framework-philosophy)
+- [Contributing](#contributing)
+- [Privacy & Security](#privacy--security)
+- [License](#license)
+
+### External Resources
+
+- [Privacy Policy](https://superbasicstudio.github.io/claude-conductor/PRIVACY.html)
+- [Terms of Service](https://superbasicstudio.github.io/claude-conductor/TERMS.html)
+- [Acknowledgments](THANKS.md)
+
 ## Quick Start
 
 ```bash
