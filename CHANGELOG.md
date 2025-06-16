@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release of Claude Conductor
 - Core documentation templates (CONDUCTOR.md, CLAUDE.md, ARCHITECTURE.md, BUILD.md)
-- Full template set with `--full` flag (12 documentation files)
+- Full template set with `--full` flag (13 documentation files)
 - Intelligent codebase analysis
 - Auto-creation of JOURNAL.md with first entry
 - Line number anchoring system
