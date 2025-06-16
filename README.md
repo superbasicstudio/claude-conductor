@@ -60,7 +60,7 @@ npx claude-conduct
 npx claude-conductor ./my-project
 npx claude-conduct /Users/thomas/projects/myapp
 
-# Initialize with all 12 documentation templates
+# Initialize with all 13 documentation templates
 npx claude-conductor --full
 
 # Force overwrite existing files
@@ -87,6 +87,7 @@ Claude Conductor creates a structured documentation framework that:
 - **Tracks** development history with an auto-archiving journal system
 - **Monitors** critical errors with a dedicated error ledger
 - **Analyzes** your codebase to pre-populate documentation
+- **Manages** active tasks with phase tracking and context preservation (NEW: TASKS.md)
 
 ## Documentation Templates
 
@@ -108,6 +109,7 @@ All core templates plus:
 - **CONTRIBUTING.md** - Contribution guidelines
 - **ERRORS.md** - Critical error tracking
 - **PLAYBOOKS/DEPLOY.md** - Deployment procedures
+- **TASKS.md** - Active task management and phase tracking
 
 ## Installation Options
 
@@ -213,7 +215,7 @@ claude-conductor [options] [target-dir]
 Options:
   -V, --version      Output version number
   -f, --force        Overwrite existing files
-  --full             Create all 12 documentation templates
+  --full             Create all 13 documentation templates
   --deepscan         Perform comprehensive codebase analysis
   --no-analyze       Skip codebase analysis
   -h, --help         Display help

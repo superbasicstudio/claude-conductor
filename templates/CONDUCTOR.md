@@ -23,6 +23,7 @@
 9. [Operational Playbooks](PLAYBOOKS/DEPLOY.md) - Deployment, rollback, monitoring
 10. [Contributing](CONTRIBUTING.md) - Code style, PR process, conventions
 11. [Error Ledger](ERRORS.md) - Critical P0/P1 error tracking
+12. [Task Management](TASKS.md) - Active tasks, phase tracking, context preservation
 
 ## Quick Reference
 **Main Constants**: `[file:lines]` - Description  
@@ -87,6 +88,13 @@ Claude, keep an ever-growing changelog in [`JOURNAL.md`](JOURNAL.md).
 - **How**: Fix implementation
 - **Issues**: Debugging challenges
 - **Result**: Resolution and prevention measures
+
+### [Task Title] |TASK:TASK-YYYY-MM-DD-001|
+- **What**: Task implementation summary
+- **Why**: Part of [Phase Name] phase
+- **How**: Technical approach and key decisions
+- **Issues**: Blockers encountered and resolved
+- **Result**: Task completed, findings documented in ARCHITECTURE.md
 \```
 
 ### Compaction Rule
@@ -274,6 +282,71 @@ METHOD /api/endpoint
    - Add commit hash and PR link
    - Add `|ERROR:<ID>|` tag to JOURNAL.md entry
    - Link back to JOURNAL entry from ERRORS.md
+
+### 13. TASKS.md (Active Task Management)
+**Purpose**: Track ongoing work with phase awareness and context preservation between sessions.
+
+**IMPORTANT**: TASKS.md complements Claude's built-in todo system - it does NOT replace it:
+- Claude's todos: For immediate task tracking within a session
+- TASKS.md: For preserving context and state between sessions
+
+**Required Structure**:
+```
+# Task Management
+
+## Active Phase
+**Phase**: [High-level project phase name]
+**Started**: YYYY-MM-DD
+**Target**: YYYY-MM-DD
+**Progress**: X/Y tasks completed
+
+## Current Task
+**Task ID**: TASK-YYYY-MM-DD-NNN
+**Title**: [Descriptive task name]
+**Status**: PLANNING | IN_PROGRESS | BLOCKED | TESTING | COMPLETE
+**Started**: YYYY-MM-DD HH:MM
+**Dependencies**: [List task IDs this depends on]
+
+### Task Context
+<!-- Critical information needed to resume this task -->
+- **Previous Work**: [Link to related tasks/PRs]
+- **Key Files**: [Primary files being modified with line ranges]
+- **Environment**: [Specific config/versions if relevant]
+- **Next Steps**: [Immediate actions when resuming]
+
+### Findings & Decisions
+- **FINDING-001**: [Discovery that affects approach]
+- **DECISION-001**: [Technical choice made] → Link to ARCHITECTURE.md
+- **BLOCKER-001**: [Issue preventing progress] → Link to resolution
+
+### Task Chain
+1. ✅ [Completed prerequisite task] (TASK-YYYY-MM-DD-001)
+2. 🔄 [Current task] (CURRENT)
+3. ⏳ [Next planned task]
+4. ⏳ [Future task in phase]
+```
+
+**Task Management Rules**:
+1. **One Active Task**: Only one task should be IN_PROGRESS at a time
+2. **Context Capture**: Before switching tasks, capture all context needed to resume
+3. **Findings Documentation**: Record unexpected discoveries that impact the approach
+4. **Decision Linking**: Link architectural decisions to ARCHITECTURE.md
+5. **Completion Trigger**: When task completes:
+   - Generate JOURNAL.md entry with task summary
+   - Archive task details to TASKS_ARCHIVE/YYYY-MM/TASK-ID.md
+   - Load next task from chain or prompt for new phase
+
+**Task States**:
+- **PLANNING**: Defining approach and breaking down work
+- **IN_PROGRESS**: Actively working on implementation
+- **BLOCKED**: Waiting on external dependency or decision
+- **TESTING**: Implementation complete, validating functionality
+- **COMPLETE**: Task finished and documented
+
+**Integration with Journal**:
+- Each completed task auto-generates a journal entry
+- Journal references task ID for full context
+- Critical findings promoted to relevant documentation
 
 ## Documentation Optimization Rules
 

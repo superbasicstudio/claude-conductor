@@ -18,7 +18,7 @@ This is a **documentation framework** designed to work with Claude Code AI assis
 - **CONDUCTOR.md** (`CONDUCTOR.md:1-437`) - Master template that defines the entire documentation system
 
 ### Planned Documentation Modules
-The framework defines 12 interconnected documentation files:
+The framework defines 13 interconnected documentation files:
 1. **ARCHITECTURE.md** - Tech stack and system design
 2. **DESIGN.md** - Visual design system
 3. **UIUX.md** - User interaction patterns  
@@ -38,7 +38,7 @@ Since this is a documentation framework, the typical workflow is:
 
 1. **Start with CONDUCTOR.md** - Review the template structure
 2. **Create project-specific CLAUDE.md** - Adapt this template for target project
-3. **Implement documentation modules** - Create the 12 files as needed
+3. **Implement documentation modules** - Create the 13 files as needed
 4. **Set up journaling system** - Begin tracking changes in JOURNAL.md
 5. **Maintain cross-links** - Keep documentation interconnected
 6. **Archive when needed** - Move old journal entries when exceeding 500 lines

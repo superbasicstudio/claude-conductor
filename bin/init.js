@@ -28,14 +28,14 @@ program
   .command('init [target-dir]', { isDefault: true })
   .description('Initialize documentation framework in your project')
   .option('-f, --force', 'Overwrite existing files')
-  .option('--full', 'Create all 12 documentation templates (default: core templates only)')
+  .option('--full', 'Create all 14 documentation templates (default: core templates only)')
   .option('--deepscan', 'Perform comprehensive codebase analysis (slower but more detailed)')
   .option('--no-analyze', 'Skip codebase analysis')
   .option('-y, --yes', 'Skip confirmation prompts (use with caution)')
   .addHelpText('after', `
 Examples:
   $ npx claude-conductor                    # Initialize core templates only
-  $ npx claude-conductor --full           # Initialize all 12 templates
+  $ npx claude-conductor --full           # Initialize all 13 templates
   $ npx claude-conductor --deepscan       # Deep analysis of your codebase
   $ npx claude-conductor ./docs           # Initialize in ./docs directory
   $ npx claude-conductor --force          # Overwrite existing files
@@ -120,7 +120,7 @@ program
   .description('⚠️ ALPHA: Clean reinstall of Claude Conductor (Step 2: Run backup first!)')
   .option('--clean', 'Perform clean reinstall (requires backup first)')
   .option('-f, --force', 'Force upgrade without checking for backup')
-  .option('--full', 'Create all 12 documentation templates')
+  .option('--full', 'Create all 14 documentation templates')
   .option('-y, --yes', 'Skip confirmation prompts')
   .addHelpText('after', `
 ⚠️  WARNING: EARLY ALPHA FEATURE - This DELETES files! Always backup first!
@@ -135,7 +135,7 @@ Make sure you ran 'backup' first!
 
 Examples:
   $ npx claude-conductor upgrade --clean     # Clean reinstall (safe with backup)
-  $ npx claude-conductor upgrade --clean --full  # Install all 12 templates`)
+  $ npx claude-conductor upgrade --clean --full  # Install all 13 templates`)
   .action(async (targetDir, options) => {
     try {
       const dir = targetDir || '.';
@@ -212,7 +212,7 @@ async function initializeFramework(targetDir, options) {
   console.log(chalk.gray('  - Preserves existing files'));
   console.log('');
   console.log(chalk.blue('+---------------------------------------+'));
-  console.log(chalk.blue('|') + chalk.blue.bold(' FULL: All 12 documentation templates  ') + chalk.blue('|'));
+  console.log(chalk.blue('|') + chalk.blue.bold(' FULL: All 14 documentation templates  ') + chalk.blue('|'));
   console.log(chalk.blue('+---------------------------------------+'));
   console.log(chalk.gray('  npx claude-conductor --full'));
   console.log(chalk.gray('  - Creates complete framework'));
@@ -905,7 +905,7 @@ async function checkExistingFiles(targetPath, full = false) {
   const allTemplates = [
     'CONDUCTOR.md', 'CLAUDE.md', 'ARCHITECTURE.md', 'BUILD.md', 'JOURNAL.md',
     'DESIGN.md', 'UIUX.md', 'CONFIG.md', 'DATA_MODEL.md', 'API.md', 
-    'TEST.md', 'CONTRIBUTING.md', 'ERRORS.md', 'PLAYBOOKS/DEPLOY.md'
+    'TEST.md', 'CONTRIBUTING.md', 'ERRORS.md', 'TASKS.md', 'PLAYBOOKS/DEPLOY.md'
   ];
   
   const templatesToCheck = full ? allTemplates : coreTemplates;
@@ -1234,7 +1234,7 @@ async function findConductorFiles(targetPath) {
   const allFiles = [
     'CLAUDE.md', 'CONDUCTOR.md', 'JOURNAL.md', 'ARCHITECTURE.md', 
     'BUILD.md', 'API.md', 'CONFIG.md', 'DATA_MODEL.md', 'DESIGN.md',
-    'UIUX.md', 'TEST.md', 'CONTRIBUTING.md', 'ERRORS.md', 'PLAYBOOKS'
+    'UIUX.md', 'TEST.md', 'CONTRIBUTING.md', 'ERRORS.md', 'TASKS.md', 'PLAYBOOKS'
   ];
   
   const foundFiles = [];

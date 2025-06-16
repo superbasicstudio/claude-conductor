@@ -11,6 +11,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Platform Support**: [Deployment targets]
 - **DO NOT**: [Critical things to avoid]
 
+## Session Startup Checklist
+**IMPORTANT**: At the start of each session, check these items:
+1. **Check TASKS.md** - Look for any IN_PROGRESS or BLOCKED tasks from previous sessions
+2. **Review recent JOURNAL.md entries** - Scan last 2-3 entries for context
+3. **If resuming work**: Load the current task context from TASKS.md before proceeding
+
 ## Table of Contents
 1. [Architecture](ARCHITECTURE.md) - Tech stack, folder structure, infrastructure
 2. [Design Tokens](DESIGN.md) - Colors, typography, visual system
@@ -23,6 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 9. [Operational Playbooks](PLAYBOOKS/DEPLOY.md) - Deployment, rollback, monitoring
 10. [Contributing](CONTRIBUTING.md) - Code style, PR process, conventions
 11. [Error Ledger](ERRORS.md) - Critical P0/P1 error tracking
+12. [Task Management](TASKS.md) - Active tasks, phase tracking, context preservation
 
 ## Quick Reference
 **Main Constants**: `[file:lines]` - Description  
@@ -59,6 +66,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - At the end of each work session
 - When making architectural decisions
 - Format: What/Why/How/Issues/Result structure
+
+## Task Management Integration
+**How TASKS.md and JOURNAL.md work together**:
+1. **Active Work**: TASKS.md tracks current/incomplete tasks with full context
+2. **Completed Work**: When tasks complete, they generate JOURNAL.md entries with `|TASK:ID|` tags
+3. **History**: JOURNAL.md preserves complete task history even if Claude Code is reinstalled
+4. **Context Recovery**: Search JOURNAL.md for `|TASK:` to see all completed tasks over time
+5. **Clean Handoffs**: TASKS.md always shows what needs to be resumed or completed
 
 ## Version History
 - **v1.0.0** - Initial release
