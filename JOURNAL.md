@@ -1,5 +1,23 @@
 # Engineering Journal
 
+## 2025-01-18 (v1.1.1)
+
+### Fixed Security Scan Prompt Logic When User Declines
+- **What**: Fixed issue where security scan instruction appeared in recommended next step even when user chose "N"
+- **Why**: User reported that declining security scan still showed security scan instructions in the prompt
+- **How**: Added conditional logic to check if user chose security checkup and only include security scan text when appropriate
+- **Issues**: None - clean implementation
+- **Result**: Recommended prompt now correctly excludes security scan instruction when user declines
+
+### Added Contributors Link to Thank You Message
+- **What**: Added link to THANKS.md at the end of initialization script
+- **Why**: Acknowledge contributors and make it easy for users to see who helped build the project
+- **How**: Updated animateThankYou() function to include contributor message with link to THANKS.md
+- **Issues**: None
+- **Result**: Users now see "Made with ❤️ by our amazing contributors" with link to recognition page
+
+---
+
 ## 2025-01-14 19:15
 
 ### Added Legal Disclaimer to README
