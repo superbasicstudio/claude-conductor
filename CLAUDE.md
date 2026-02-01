@@ -139,6 +139,24 @@ Confidence: [████████░░] 80%
 - When making architectural decisions
 - Format: What/Why/How/Issues/Result structure
 
+## Companion Project: CLAUDE-THINK
+
+Two repos, two tools, complementary not competitive.
+
+- **Conductor** is the **codebase brain** — it documents your project's architecture, APIs, build systems, errors, and development history. It tells Claude *what your project is*.
+- **CLAUDE-THINK** is the **behavioral brain** — it manages Claude's rules, memory, conversation preferences, and session continuity. It tells Claude *how to think and behave*.
+
+Together they give Claude full context — what the project is AND how to work on it. A project can use one or both. They don't overlap — they stack.
+
+| | Conductor | THINK |
+|---|---|---|
+| Focus | Codebase documentation | AI behavior and memory |
+| Generates | ARCHITECTURE.md, BUILD.md, API.md, JOURNAL.md... | GOLDEN-RULES.md, LONG-TERM-MEMORY.md, TODOS.md... |
+| Delivery | `npx claude-conductor` (automated CLI) | Copy templates into project (manual) |
+| Answers | "What is this codebase?" | "How should Claude behave?" |
+
+For AI behavior management, see [CLAUDE-THINK](https://github.com/superbasicstudio/claude-think).
+
 ## Current State
 - [x] CONDUCTOR.md template complete
 - [ ] Target project identification
@@ -147,4 +165,6 @@ Confidence: [████████░░] 80%
 - [ ] Error tracking implementation
 
 ## Version History
+- **v2.0.0** - Node.js minimum raised to >=18.0.0
+- **v1.3.0** - Security fixes, backfilled changelog, SECURITY.md
 - **v1.0.0** - Initial CONDUCTOR.md template created
