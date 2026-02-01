@@ -4,12 +4,9 @@
 
 | Version | Supported          | Node.js        |
 |---------|--------------------|----------------|
-| 1.3.x   | Yes                | >= 16.0.0      |
-| 1.2.x   | Security fixes only| >= 16.0.0      |
-| < 1.2   | No                 | -              |
-
-> **Note:** Version 2.0.0 will raise the minimum Node.js requirement to >= 18.0.0.
-> Users on Node 16 can remain on 1.3.x.
+| 2.x     | Yes                | >= 18.0.0      |
+| 1.3.x   | Security fixes only| >= 16.0.0      |
+| < 1.3   | No                 | -              |
 
 ## Reporting a Vulnerability
 

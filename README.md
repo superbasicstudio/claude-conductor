@@ -83,9 +83,9 @@ Create a comprehensive, interconnected scaffolded documentation system that help
 
 [⬆ Back to top](#table-of-contents)
 
-- **Node.js** >= 16.0.0
+- **Node.js** >= 18.0.0
 
-> **Heads up:** Version 2.0.0 will require Node.js >= 18.0.0. Node 16 reached end-of-life in September 2023 and no longer receives security updates. We recommend upgrading to Node 18+ when possible. Users who need to stay on Node 16 can pin to `claude-conductor@1.3.x`.
+> **Upgrading from 1.x?** Version 2.0.0 requires Node.js 18 or higher. Node 16 reached end-of-life in September 2023. If you need to stay on Node 16, pin to `claude-conductor@1.3.x`.
 
 ## Quick Start
 

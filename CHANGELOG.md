@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-06-17
+
+### Breaking Changes
+- Minimum Node.js requirement raised from >=16.0.0 to >=18.0.0
+  - Node 16 has been end-of-life since September 2023
+  - Users on Node 16 should pin to `claude-conductor@1.3.x`
+  - No code changes required — the API is identical to 1.3.0
+
+### Changed
+- Updated `engines.node` field in package.json to `>=18.0.0`
+- Updated supported versions in SECURITY.md and README
+
 ## [1.3.0] - 2025-06-17
 
 ### Security
@@ -19,9 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - SECURITY.md with vulnerability reporting policy and supported versions
 - Requirements section in README with Node.js version guidance
-
-### Upcoming
-- **v2.0.0** will raise the minimum Node.js requirement from >=16.0.0 to >=18.0.0. Node 16 has been EOL since September 2023. Users on Node 16 can remain on 1.3.x.
 
 ## [1.3.0-beta.1] - 2025-06-17
 
@@ -135,6 +144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Critical error ledger
 - Support for multiple package managers (npm, npx, yarn, pnpm, bun)
 
+[2.0.0]: https://github.com/superbasicstudio/claude-conductor/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/superbasicstudio/claude-conductor/compare/v1.3.0-beta.1...v1.3.0
 [1.3.0-beta.1]: https://github.com/superbasicstudio/claude-conductor/compare/v1.2.0...v1.3.0-beta.1
 [1.2.0]: https://github.com/superbasicstudio/claude-conductor/compare/v1.1.1...v1.2.0
