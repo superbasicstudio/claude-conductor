@@ -50,6 +50,7 @@ Create a comprehensive, interconnected scaffolded documentation system that help
 
 ## Table of Contents
 
+- [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [What It Does](#what-it-does)
 - [Documentation Templates](#documentation-templates)
@@ -72,9 +73,19 @@ Create a comprehensive, interconnected scaffolded documentation system that help
 
 ### External Resources
 
+- [Changelog](CHANGELOG.md)
+- [Security Policy](SECURITY.md)
 - [Privacy Policy](https://superbasicstudio.github.io/claude-conductor/PRIVACY.html)
 - [Terms of Service](https://superbasicstudio.github.io/claude-conductor/TERMS.html)
 - [Acknowledgments](THANKS.md)
+
+## Requirements
+
+[⬆ Back to top](#table-of-contents)
+
+- **Node.js** >= 16.0.0
+
+> **Heads up:** Version 2.0.0 will require Node.js >= 18.0.0. Node 16 reached end-of-life in September 2023 and no longer receives security updates. We recommend upgrading to Node 18+ when possible. Users who need to stay on Node 16 can pin to `claude-conductor@1.3.x`.
 
 ## Quick Start
 
@@ -555,6 +566,7 @@ This entire codebase is open source. You can verify our privacy commitment by re
 **Super Basic Studio, LLC** is committed to developer privacy. This tool is simply a collection of markdown templates designed to help Claude Code AI assistant better understand and navigate your codebase.
 
 For more details:
+- [Security Policy](SECURITY.md) — How to report vulnerabilities and supported versions
 - [Privacy Policy](https://github.com/superbasicstudio/claude-conductor/blob/main/PRIVACY.md)
 - [Terms of Service](https://github.com/superbasicstudio/claude-conductor/blob/main/TERMS.md)
 

@@ -84,12 +84,52 @@ The framework includes a systematic error ledger (`CONDUCTOR.md:241-275`):
 - Document Anti-Patterns
 - Set up Version History
 
+## Response Style Configuration (Optional)
+
+### Enable/Disable Response Style Controls
+To enable measured response style, add the following to your CLAUDE.md:
+
+```markdown
+## Response Style Settings
+- **CONFIDENCE_INDICATORS**: enabled
+- **TONE_CONTROL**: strict
+```
+
+### Confidence-Based Communication (When Enabled)
+**CRITICAL**: Only declare tasks as "DONE", "COMPLETE", or "PERFECT" when confidence level is ≥98%
+
+#### Confidence Indicators
+When making changes or providing solutions, include a confidence indicator:
+
+```
+Confidence: [████████░░] 80%
+```
+
+#### Confidence Levels
+- **95-100%**: Solution thoroughly tested, all edge cases considered
+- **80-94%**: High confidence, minor uncertainties remain
+- **60-79%**: Moderate confidence, some aspects need verification
+- **40-59%**: Low confidence, significant uncertainties
+- **<40%**: Experimental, requires extensive testing
+
+### Response Tone Guidelines (When TONE_CONTROL: strict)
+1. **Avoid premature success declarations** - No "DONE!", "PERFECT!", "COMPLETE!" unless ≥98% confident
+2. **Use measured language** - "This should resolve...", "I've implemented...", "Let's verify..."
+3. **Acknowledge uncertainties** - "There may be edge cases...", "We should test..."
+4. **Collaborative approach** - Frame as pair programming, not declarations
+5. **🍺 Emoji Rule** - Only use celebration emojis when ≥99.7% confident
+
+### Example Responses
+❌ **Avoid**: "DONE! Your app will run perfectly now!"
+✅ **Prefer**: "I've implemented the fix. Confidence: [███████░░░] 70% - Let's run tests to verify."
+
 ## Anti-Patterns (Avoid These)
 ❌ **Don't delete journal history** - Only move & summarize when archiving
 ❌ **Don't create monolithic documentation** - Use modular system instead
 ❌ **Don't skip line number references** - Essential for AI navigation
 ❌ **Don't ignore error tracking** - P0/P1 errors must be logged
 ❌ **Don't break cross-links** - Maintain bidirectional linking
+❌ **Don't over-promise success** - Use confidence indicators instead
 
 ## Journal Update Requirements
 **IMPORTANT**: Update JOURNAL.md regularly throughout our work sessions:
