@@ -139,23 +139,23 @@ Confidence: [████████░░] 80%
 - When making architectural decisions
 - Format: What/Why/How/Issues/Result structure
 
-## Companion Project: CLAUDE-THINK
+## Companion Project: Claude Anchor
 
 Two repos, two tools, complementary not competitive.
 
 - **Conductor** is the **codebase brain** — it documents your project's architecture, APIs, build systems, errors, and development history. It tells Claude *what your project is*.
-- **CLAUDE-THINK** is the **behavioral brain** — it manages Claude's rules, memory, conversation preferences, and session continuity. It tells Claude *how to think and behave*.
+- **Anchor** is the **behavioral brain** — it manages Claude's rules, memory, conversation preferences, and session continuity. It tells Claude *how to think and behave*.
 
 Together they give Claude full context — what the project is AND how to work on it. A project can use one or both. They don't overlap — they stack.
 
-| | Conductor | THINK |
+| | Conductor | Anchor |
 |---|---|---|
 | Focus | Codebase documentation | AI behavior and memory |
 | Generates | ARCHITECTURE.md, BUILD.md, API.md, JOURNAL.md... | GOLDEN-RULES.md, LONG-TERM-MEMORY.md, TODOS.md... |
 | Delivery | `npx claude-conductor` (automated CLI) | Copy templates into project (manual) |
 | Answers | "What is this codebase?" | "How should Claude behave?" |
 
-For AI behavior management, see [CLAUDE-THINK](https://github.com/superbasicstudio/claude-think).
+For AI behavior management, see [Claude Anchor](https://github.com/superbasicstudio/claude-anchor).
 
 ## Current State
 - [x] CONDUCTOR.md template complete

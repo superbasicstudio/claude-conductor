@@ -67,14 +67,14 @@ Create a comprehensive, interconnected scaffolded documentation system that help
 - [Best Practices](#best-practices)
 - [Next Steps After Installation](#next-steps-after-installation)
 - [Framework Philosophy](#framework-philosophy)
-- [Companion Project: CLAUDE-THINK](#companion-project-claude-think)
+- [Companion Project: Claude Anchor](#companion-project-claude-anchor)
 - [Contributing](#contributing)
 - [Privacy & Security](#privacy--security)
 - [License](#license)
 
 ### External Resources
 
-- [CLAUDE-THINK](https://github.com/superbasicstudio/claude-think) — Companion behavioral framework
+- [Claude Anchor](https://github.com/superbasicstudio/claude-anchor) — Companion behavioral framework
 - [Changelog](CHANGELOG.md)
 - [Security Policy](SECURITY.md)
 - [Privacy Policy](https://superbasicstudio.github.io/claude-conductor/PRIVACY.html)
@@ -523,7 +523,7 @@ This ensures Claude maintains a detailed development history in JOURNAL.md, whic
 3. **Maintained > Stale** - Regular updates through development
 4. **Navigable > Comprehensive** - Easy to find what you need
 
-## Companion Project: CLAUDE-THINK
+## Companion Project: Claude Anchor
 
 [⬆ Back to top](#table-of-contents)
 
@@ -531,11 +531,11 @@ This ensures Claude maintains a detailed development history in JOURNAL.md, whic
 
 Conductor is the **codebase brain** — it documents your project's architecture, APIs, build systems, errors, and development history. It tells Claude *what your project is*.
 
-[CLAUDE-THINK](https://github.com/superbasicstudio/claude-think) is the **behavioral brain** — it manages Claude's rules, memory, conversation preferences, and session continuity. It tells Claude *how to think and behave*.
+[Claude Anchor](https://github.com/superbasicstudio/claude-anchor) is the **behavioral brain** — it manages Claude's rules, memory, conversation preferences, and session continuity. It tells Claude *how to think and behave*.
 
 Together they give Claude full context — what the project is AND how to work on it.
 
-| | Conductor | THINK |
+| | Conductor | Anchor |
 |---|---|---|
 | **Focus** | Codebase documentation | AI behavior and memory |
 | **Generates** | ARCHITECTURE.md, BUILD.md, API.md, JOURNAL.md | GOLDEN-RULES.md, LONG-TERM-MEMORY.md, TODOS.md |
