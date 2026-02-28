@@ -1,6 +1,8 @@
 # Test directories
 test/
 test-project/
+temp-test*/
+test-temp*/
 
 # Development files
 *.test.js
@@ -19,3 +21,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Backup & temp
+conductor-backup/
+tmp/
+temp/
