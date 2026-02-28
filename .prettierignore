@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+templates/
+test-project/
+temp-test*/
+test-temp*/
+docs/
+*.jpg
+*.png
+*.ico
+pnpm-lock.yaml
+package-lock.json

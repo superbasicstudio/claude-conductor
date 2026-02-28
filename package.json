@@ -1,6 +1,6 @@
 {
   "name": "claude-conductor",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Modular documentation framework for AI-assisted development with Claude Code",
   "bin": {
     "claude-conductor": "bin/init.js",
@@ -9,7 +9,23 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublishOnly": "npm test"
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "npm test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.mjs": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "keywords": [
     "claude",
@@ -39,7 +55,13 @@
     "glob": "^10.0.0"
   },
   "devDependencies": {
-    "jest": "^29.0.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.2",
+    "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "jest": "^29.0.0",
+    "lint-staged": "^16.3.0",
+    "prettier": "^3.8.1"
   },
   "engines": {
     "node": ">=18.0.0"
