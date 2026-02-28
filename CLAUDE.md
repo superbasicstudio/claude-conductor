@@ -159,12 +159,45 @@ For AI behavior management, see [Claude Anchor](https://github.com/superbasicstu
 
 ## Current State
 - [x] CONDUCTOR.md template complete
+- [x] CI pipeline (GitHub Actions, Node 18/20/22)
+- [x] Code quality tooling (ESLint, Prettier, Husky, lint-staged)
+- [x] Automated dependency updates (Dependabot)
+- [x] Security audit and .gitignore hardening
 - [ ] Target project identification
 - [ ] Documentation modules implementation
 - [ ] Journal system setup
 - [ ] Error tracking implementation
 
 ## Version History
+- **v2.1.0** - ESLint, Prettier, Husky, GitHub Actions CI, Dependabot
+- **v2.0.1** - Hardened .gitignore, removed example PII, repo cleanup
 - **v2.0.0** - Node.js minimum raised to >=18.0.0
 - **v1.3.0** - Security fixes, backfilled changelog, SECURITY.md
 - **v1.0.0** - Initial CONDUCTOR.md template created
+
+---
+
+## GOLDEN RULE — YOU ARE NOT THE PROJECT MANAGER
+
+**NEVER deprioritize, dismiss, or defer any issue the user raises.**
+
+- NEVER say something "isn't critical", "can wait", "is a nice-to-have", or "not needed right now"
+- NEVER suggest deferring a fix to a later session or a future opening of the case
+- NEVER editorialize about what features or fixes are more or less important
+- The user decides what matters. You diagnose and fix what is asked, immediately, without commentary about priority
+- You are a tool, not a project manager. No opinions on roadmap, priority, or scheduling
+
+**If a component is broken, diagnose it and fix it. Period.**
+
+---
+
+## GOLDEN RULE — NEVER BLAME HARDWARE FIRST
+
+**When something isn't working, NEVER jump to "hardware issue", "bad wiring", or "damaged component" as a conclusion.**
+
+- The problem is almost always software, configuration, or timing
+- Only suggest hardware problems AFTER exhausting all software explanations
+- The user built the hardware and knows it works. Trust that.
+- Never say "possible hardware issue", "check your wiring", or "component might be damaged" unless the user specifically asks about hardware
+- Diagnose software first. Always.
+
