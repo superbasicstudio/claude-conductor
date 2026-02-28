@@ -99,7 +99,7 @@ npx claude-conduct
 
 # Initialize in a specific directory
 npx claude-conductor ./my-project
-npx claude-conduct /Users/thomas/projects/myapp
+npx claude-conduct ~/projects/myapp
 
 # Initialize with all 13 documentation templates
 npx claude-conductor --full

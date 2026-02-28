@@ -1,9 +1,5 @@
-# CORE FILES
-_core/
-_core/*
-
-# dependencies
-/node_modules
+# Dependencies
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -12,66 +8,76 @@ _core/*
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# Build output
+/build
+dist/
+
+# Testing & coverage
 /coverage
+.nyc_output/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
-# next.js
-/.next/
-/out/
+# Environment files
+.env*
+!.env.example
 
-.vscode
-.vscode/
-
-# next.js
-/.next/
-.next/
-.next/**
-/out/
-
-# 
-/build
-
-# production
-/build
-
-# misc
-.DS_Store
+# Private keys & certificates
 *.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
 
-# debug
+# Credentials & secrets
+credentials.json
+secrets.*
+config.local.*
+
+# IDE & editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-# any .env* besides .env.example
-.env*
-.env.example
-.env*.local
-.env.local
-.env.seed
-.env.dev.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env
+# Claude session data
+.claude/
 
-# vercel
+# Temp & backup directories
+tmp/
+temp/
+conductor-backup/
+
+# Test output directories
+temp-test*/
+test-temp*/
+test-project/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vercel
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-# Exclude test result images but allow baseline snapshots
-tests/e2e/**/test-failed-*.png
-tests/e2e/**/test-failed-*.jpg
-tests/e2e/**/*-actual.png
-tests/e2e/**/*-diff.png
-tests/e2e/**/*-expected.png
+# Core files
+_core/
