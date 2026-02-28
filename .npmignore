@@ -26,3 +26,14 @@ yarn-error.log*
 conductor-backup/
 tmp/
 temp/
+
+# Config files (not needed in published package)
+.editorconfig
+.eslintrc*
+eslint.config.*
+.prettierrc
+.prettierignore
+jest.config.*
+.npmrc
+.husky/
+.github/

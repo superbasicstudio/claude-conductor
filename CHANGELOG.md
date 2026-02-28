@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-02-28
+
+### Added
+- ESLint 10 with flat config for code linting
+- Prettier 3 for consistent code formatting
+- Husky 9 pre-commit hooks with lint-staged
+- GitHub Actions CI pipeline (Node 18, 20, 22 test matrix)
+- Dependabot configuration for automated dependency updates
+- Jest coverage thresholds (80% branches/functions/lines/statements)
+- `.editorconfig` for cross-editor consistency
+- New scripts: `lint`, `lint:fix`, `format`, `format:check`, `test:coverage`
+
 ## [2.0.1] - 2026-02-28
 
 ### Changed
@@ -151,6 +163,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Critical error ledger
 - Support for multiple package managers (npm, npx, yarn, pnpm, bun)
 
+[2.1.0]: https://github.com/superbasicstudio/claude-conductor/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/superbasicstudio/claude-conductor/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/superbasicstudio/claude-conductor/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/superbasicstudio/claude-conductor/compare/v1.3.0-beta.1...v1.3.0
