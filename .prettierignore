@@ -5,6 +5,7 @@ test-project/
 temp-test*/
 test-temp*/
 docs/
+*.md
 *.jpg
 *.png
 *.ico
