@@ -603,6 +603,10 @@ BSD 2-Clause © Super Basic Studio
 
 Made with love by [Super Basic Studio](https://superbasic.studio)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=superbasicstudio/claude-conductor&type=Date)](https://star-history.com/#superbasicstudio/claude-conductor&Date)
+
 ## Keywords
 
 claude, claude code, documentation, ai development, conductor, framework, claude conductor, vibe coding, super basic studio
