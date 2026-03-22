@@ -46,6 +46,12 @@
 
 ---
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=superbasicstudio/claude-conductor&type=Date)](https://star-history.com/#superbasicstudio/claude-conductor&Date)
+
+---
+
 Create a comprehensive, interconnected scaffolded documentation system that helps Claude Code understand and navigate your codebase more effectively, and retain better context.
 
 ## Table of Contents
@@ -602,10 +608,6 @@ BSD 2-Clause © Super Basic Studio
 ---
 
 Made with love by [Super Basic Studio](https://superbasic.studio)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=superbasicstudio/claude-conductor&type=Date)](https://star-history.com/#superbasicstudio/claude-conductor&Date)
 
 ## Keywords
 
