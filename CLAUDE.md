@@ -161,17 +161,21 @@ For AI behavior management, see [Claude Anchor](https://github.com/superbasicstu
 - [x] CONDUCTOR.md template complete
 - [x] CI pipeline (GitHub Actions, Node 20/22/24)
 - [x] Code quality tooling (ESLint, Prettier, Husky, lint-staged)
-- [x] Automated dependency updates (Dependabot)
+- [x] Automated dependency updates (Dependabot, daily)
 - [x] Security audit and .gitignore hardening
+- [x] Pinned dependency versions (exact, no ^ ranges)
+- [x] npm overrides for transitive CVE patching
+- [x] CI security audit job (npm audit + audit-ci)
+- [x] Comprehensive test suite (89 tests)
 - [ ] Target project identification
 - [ ] Documentation modules implementation
 - [ ] Journal system setup
 - [ ] Error tracking implementation
 
 ## Version History
+- **v2.2.0** - Node.js minimum raised to >=20.0.0, security hardening, pinned deps, CVE fixes, 89-test suite
 - **v2.1.0** - ESLint, Prettier, Husky, GitHub Actions CI, Dependabot
 - **v2.0.1** - Hardened .gitignore, removed example PII, repo cleanup
-- **v2.2.0** - Node.js minimum raised to >=20.0.0, security hardening, pinned deps, CVE fixes
 - **v2.0.0** - Node.js minimum raised to >=18.0.0
 - **v1.3.0** - Security fixes, backfilled changelog, SECURITY.md
 - **v1.0.0** - Initial CONDUCTOR.md template created

@@ -1,5 +1,37 @@
 # Engineering Journal
 
+## 2026-03-31 (v2.2.0)
+
+### Security Hardening and CVE Patching
+- **What**: Full security audit of dependency tree, patched 2 active CVEs
+- **Why**: Recent supply chain attacks (Axios hijack Mar 31 2026, chalk/debug Sep 2025) prompted audit
+- **How**: npm audit fix, added overrides for brace-expansion/picomatch/minimatch, pinned all deps to exact versions
+- **Issues**: brace-expansion v1.1.12 (GHSA-f886-m6hf-6m8v), picomatch v2.3.1 (GHSA-3v7f-55p6-f55p, GHSA-c2c7-rcm5-vvqj)
+- **Result**: 0 vulnerabilities in npm audit, all deps pinned to exact versions
+
+### Node.js 20 Minimum Version Bump
+- **What**: Raised minimum Node.js from >=18.0.0 to >=20.0.0
+- **Why**: Node 18 reached EOL April 2025, security best practice
+- **How**: Updated engines field, CI matrix (20/22/24), README, SECURITY.md, issue templates
+- **Issues**: None, all deps already compatible with Node 20+
+- **Result**: Clean upgrade, zero deprecation warnings, all tests pass
+
+### Comprehensive Test Suite (20 to 89 tests)
+- **What**: Expanded test coverage from 20 to 89 tests across 20 describe blocks
+- **Why**: Existing suite only covered happy paths for init/backup/restore
+- **How**: Added tests for checkup, --full, --no-analyze, --deepscan, template integrity, package.json integrity, security config, CI config, file safety, edge cases, Node.js compatibility
+- **Issues**: Two initial failures (Module.wrap API, version parsing regex) fixed immediately
+- **Result**: Full coverage of all CLI commands, flags, and code paths
+
+### npm Hardening
+- **What**: Enhanced .npmrc, CI audit job, Dependabot config
+- **Why**: Supply chain defense best practices for npm package maintainers
+- **How**: save-exact=true, audit=true, package-lock=true in .npmrc; dedicated audit CI job; daily Dependabot checks
+- **Issues**: None
+- **Result**: Future installs pin exact versions, every PR audited automatically
+
+---
+
 ## 2025-01-18 (v1.1.1)
 
 ### Fixed Security Scan Prompt Logic When User Declines
