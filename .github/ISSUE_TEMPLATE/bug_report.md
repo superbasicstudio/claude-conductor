@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
  - OS: [e.g. macOS, Windows, Linux]
- - Node.js Version: [e.g. 18.0.0]
+ - Node.js Version: [e.g. 20.0.0]
  - Claude Conductor Version: [e.g. 1.1.1]
  - Claude Code Version: [e.g. latest]
 

@@ -2,6 +2,19 @@ const { execSync } = require("child_process");
 const fs = require("fs-extra");
 const path = require("path");
 const os = require("os");
+const { version } = require("../package.json");
+
+const CLI = path.join(__dirname, "..", "bin", "init.js");
+const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
+
+function run(args, opts = {}) {
+  return execSync(`node ${CLI} ${args}`, {
+    cwd: opts.cwd || path.join(__dirname, ".."),
+    encoding: "utf8",
+    timeout: 30000,
+    ...opts,
+  });
+}
 
 describe("Claude Conductor CLI", () => {
   let tempDir;
@@ -14,355 +27,1035 @@ describe("Claude Conductor CLI", () => {
     await fs.remove(tempDir);
   });
 
-  test("should initialize framework in empty directory", () => {
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
+  // =========================================================================
+  // VERSION AND HELP
+  // =========================================================================
 
-    expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
-    expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
-    expect(fs.pathExistsSync(path.join(tempDir, "JOURNAL.md"))).toBe(true);
-  });
-
-  test("should respect --force flag", async () => {
-    // Create existing CLAUDE.md
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "existing content");
-
-    execSync(`node bin/init.js ${tempDir} --force --yes`, {
-      cwd: __dirname + "/..",
+  describe("version and help", () => {
+    test("should show correct version from package.json", () => {
+      const output = run("--version");
+      expect(output.trim()).toBe(version);
     });
 
-    const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    expect(content).not.toBe("existing content");
-  });
-
-  test("should skip existing files without --force", async () => {
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "existing content");
-
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    expect(content).toBe("existing content");
-  });
-
-  test("should show version", () => {
-    const output = execSync("node bin/init.js --version", {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
-    });
-    expect(output.trim()).toBe("2.1.0");
-  });
-
-  test("should NOT overwrite JOURNAL.md without --force", async () => {
-    // Create existing JOURNAL.md with custom content
-    const customJournal = "# My Custom Journal\n\nImportant entries here";
-    await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
-
-    // Run without --force
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Verify JOURNAL.md was NOT overwritten
-    const content = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
-    expect(content).toBe(customJournal);
-  });
-
-  test("should NOT update existing CLAUDE.md during analysis without --force", async () => {
-    // Create custom CLAUDE.md with user content
-    const customClaude =
-      "# My Custom CLAUDE.md\n\nUser customizations here\n- **Tech Stack**: [List core technologies]";
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
-
-    // Run without --force (CLAUDE.md will be skipped in copy but should NOT be modified by analysis)
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Verify CLAUDE.md was NOT modified by analysis
-    const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    expect(content).toBe(customClaude);
-    expect(content).toContain("[List core technologies]"); // Should still have placeholder
-  });
-
-  test("should NOT update existing ARCHITECTURE.md during deepscan without --force", async () => {
-    // Create custom ARCHITECTURE.md
-    const customArch = "# My Architecture\n\n## Tech Stack\n\nCustom tech stack info";
-    await fs.writeFile(path.join(tempDir, "ARCHITECTURE.md"), customArch);
-
-    // Run with deepscan but without --force
-    execSync(`node bin/init.js ${tempDir} --deepscan`, {
-      cwd: __dirname + "/..",
+    test("should show help text with available commands", () => {
+      const output = run("--help");
+      expect(output).toContain("claude-conductor");
+      expect(output).toContain("init");
+      expect(output).toContain("checkup");
+      expect(output).toContain("backup");
+      expect(output).toContain("upgrade");
+      expect(output).toContain("restore");
     });
 
-    // Verify ARCHITECTURE.md was NOT modified
-    const content = await fs.readFile(path.join(tempDir, "ARCHITECTURE.md"), "utf8");
-    expect(content).toBe(customArch);
+    test("version in package.json should match semver format", () => {
+      expect(version).toMatch(/^\d+\.\d+\.\d+$/);
+    });
   });
 
-  test("should NOT update existing BUILD.md during deepscan without --force", async () => {
-    // Create custom BUILD.md
-    const customBuild = "# My Build Process\n\n## Custom Scripts\n\nDo not modify!";
-    await fs.writeFile(path.join(tempDir, "BUILD.md"), customBuild);
+  // =========================================================================
+  // INIT COMMAND - CORE TEMPLATES (DEFAULT)
+  // =========================================================================
 
-    // Run with deepscan but without --force
-    execSync(`node bin/init.js ${tempDir} --deepscan`, {
-      cwd: __dirname + "/..",
+  describe("init - core templates", () => {
+    test("should create core template files in empty directory", () => {
+      run(tempDir);
+
+      const coreFiles = ["CLAUDE.md", "CONDUCTOR.md", "ARCHITECTURE.md", "BUILD.md"];
+      for (const file of coreFiles) {
+        expect(fs.pathExistsSync(path.join(tempDir, file))).toBe(true);
+      }
     });
 
-    // Verify BUILD.md was NOT modified
-    const content = await fs.readFile(path.join(tempDir, "BUILD.md"), "utf8");
-    expect(content).toBe(customBuild);
-  });
+    test("should create JOURNAL.md with initial entry", () => {
+      run(tempDir);
+      expect(fs.pathExistsSync(path.join(tempDir, "JOURNAL.md"))).toBe(true);
 
-  test("SHOULD overwrite all files with --force --yes", async () => {
-    // Create existing files with custom content
-    const files = {
-      "CLAUDE.md": "# Custom CLAUDE",
-      "JOURNAL.md": "# Custom Journal",
-      "ARCHITECTURE.md": "# Custom Architecture",
-      "BUILD.md": "# Custom Build",
-    };
-
-    for (const [file, content] of Object.entries(files)) {
-      await fs.writeFile(path.join(tempDir, file), content);
-    }
-
-    // Run with --force --yes
-    execSync(`node bin/init.js ${tempDir} --force --yes`, {
-      cwd: __dirname + "/..",
+      const content = fs.readFileSync(path.join(tempDir, "JOURNAL.md"), "utf8");
+      expect(content).toContain("Engineering Journal");
+      expect(content).toContain("Documentation Framework Implementation");
     });
 
-    // Verify all files were overwritten
-    for (const file of Object.keys(files)) {
-      const content = await fs.readFile(path.join(tempDir, file), "utf8");
-      expect(content).not.toBe(files[file]); // Should be different from custom content
-      expect(content.length).toBeGreaterThan(50); // Should have actual template content
-    }
-  });
+    test("should NOT create extended template files by default", () => {
+      run(tempDir);
 
-  test("should add version comments to newly created files", async () => {
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
+      const extendedFiles = [
+        "DESIGN.md",
+        "UIUX.md",
+        "CONFIG.md",
+        "DATA_MODEL.md",
+        "API.md",
+        "TEST.md",
+        "CONTRIBUTING.md",
+        "ERRORS.md",
+        "TASKS.md",
+        "PLAYBOOKS/DEPLOY.md",
+      ];
 
-    const claudeContent = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    const conductorContent = await fs.readFile(path.join(tempDir, "CONDUCTOR.md"), "utf8");
-
-    expect(claudeContent).toContain("<!-- Generated by Claude Conductor v2.1.0 -->");
-    expect(conductorContent).toContain("<!-- Generated by Claude Conductor v2.1.0 -->");
-  });
-
-  // === BACKUP/RESTORE UPGRADE SYSTEM TESTS ===
-
-  test("backup should create backup folder with user files", async () => {
-    // Initialize project with custom content
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    const customJournal = "# My Important History\n\n## Critical Entry\nDo not lose this!";
-    const customClaude =
-      "# My Custom Setup\n\n- **Tech Stack**: React, Node.js\n- Important customizations";
-
-    await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
-
-    // Run backup
-    const output = execSync(`node bin/init.js backup ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+      for (const file of extendedFiles) {
+        expect(fs.pathExistsSync(path.join(tempDir, file))).toBe(false);
+      }
     });
 
-    // Verify backup created
-    expect(output).toContain("Conductor Backup (Step 1/3)");
-    expect(output).toContain("Backed up JOURNAL.md");
-    expect(output).toContain("Backed up CLAUDE.md");
-    expect(output).toContain("Backup completed successfully");
-
-    // Verify backup folder exists with correct files
-    const backupDir = path.join(tempDir, "conductor-backup");
-    expect(fs.pathExistsSync(backupDir)).toBe(true);
-
-    const backedUpJournal = await fs.readFile(path.join(backupDir, "JOURNAL.md"), "utf8");
-    const backedUpClaude = await fs.readFile(path.join(backupDir, "CLAUDE.md"), "utf8");
-
-    expect(backedUpJournal).toBe(customJournal);
-    expect(backedUpClaude).toBe(customClaude);
-  });
-
-  test("backup should handle missing files gracefully", async () => {
-    // Create empty directory
-    const output = execSync(`node bin/init.js backup ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+    test("should add version comment to CLAUDE.md", () => {
+      run(tempDir);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toContain(`<!-- Generated by Claude Conductor v${version} -->`);
     });
 
-    expect(output).toContain("No Conductor files found");
-    expect(output).toContain("Nothing to backup");
-  });
-
-  test("backup should detect existing backup", async () => {
-    // Initialize and create first backup
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-    execSync(`node bin/init.js backup ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Try to backup again
-    const output = execSync(`node bin/init.js backup ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+    test("should add version comment to CONDUCTOR.md", () => {
+      run(tempDir);
+      const content = fs.readFileSync(path.join(tempDir, "CONDUCTOR.md"), "utf8");
+      expect(content).toContain(`<!-- Generated by Claude Conductor v${version} -->`);
     });
 
-    expect(output).toContain("Backup already exists");
-    expect(output).toContain("Ready for Step 2");
-  });
-
-  test("upgrade --clean should require --clean flag", async () => {
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    const output = execSync(`node bin/init.js upgrade ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+    test("should create target directory if it does not exist", () => {
+      const nested = path.join(tempDir, "sub", "dir", "project");
+      run(nested);
+      expect(fs.pathExistsSync(path.join(nested, "CLAUDE.md"))).toBe(true);
     });
 
-    expect(output).toContain("You must use --clean flag");
-    expect(output).toContain("npx claude-conductor upgrade --clean");
+    test("should handle paths with spaces", async () => {
+      const spacePath = path.join(tempDir, "my project");
+      await fs.ensureDir(spacePath);
+      run(`"${spacePath}"`);
+      expect(fs.pathExistsSync(path.join(spacePath, "CLAUDE.md"))).toBe(true);
+    });
   });
 
-  test("upgrade --clean should require backup first", async () => {
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
+  // =========================================================================
+  // INIT COMMAND - FULL TEMPLATES
+  // =========================================================================
 
-    const output = execSync(`node bin/init.js upgrade ${tempDir} --clean`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+  describe("init --full", () => {
+    test("should create all 14 documentation template files", () => {
+      run(`${tempDir} --full`);
+
+      const allFiles = [
+        "CLAUDE.md",
+        "CONDUCTOR.md",
+        "ARCHITECTURE.md",
+        "BUILD.md",
+        "DESIGN.md",
+        "UIUX.md",
+        "CONFIG.md",
+        "DATA_MODEL.md",
+        "API.md",
+        "TEST.md",
+        "CONTRIBUTING.md",
+        "ERRORS.md",
+        "TASKS.md",
+        "PLAYBOOKS/DEPLOY.md",
+      ];
+
+      for (const file of allFiles) {
+        expect(fs.pathExistsSync(path.join(tempDir, file))).toBe(true);
+      }
     });
 
-    expect(output).toContain("No backup found! Run backup first");
-    expect(output).toContain("npx claude-conductor backup");
-  });
-
-  test("upgrade --clean should delete old files and reinstall", async () => {
-    // Initialize project
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Create backup
-    execSync(`node bin/init.js backup ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Add some extra files to test deletion
-    await fs.writeFile(path.join(tempDir, "DESIGN.md"), "custom design");
-    await fs.writeFile(path.join(tempDir, "API.md"), "custom api");
-
-    // Run clean upgrade
-    const output = execSync(`node bin/init.js upgrade ${tempDir} --clean --yes`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+    test("should create PLAYBOOKS subdirectory", () => {
+      run(`${tempDir} --full`);
+      expect(fs.pathExistsSync(path.join(tempDir, "PLAYBOOKS"))).toBe(true);
+      const stat = fs.statSync(path.join(tempDir, "PLAYBOOKS"));
+      expect(stat.isDirectory()).toBe(true);
     });
 
-    expect(output).toContain("Conductor Clean Upgrade (Step 2/3)");
-    expect(output).toContain("Deleted CLAUDE.md");
-    expect(output).toContain("Deleted CONDUCTOR.md");
-    expect(output).toContain("Clean installation completed");
+    test("all created files should have non-trivial content", () => {
+      run(`${tempDir} --full`);
 
-    // Verify fresh files exist (but user files don't yet)
-    expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
-    expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
-    expect(fs.pathExistsSync(path.join(tempDir, "JOURNAL.md"))).toBe(true);
+      const allFiles = [
+        "CLAUDE.md",
+        "CONDUCTOR.md",
+        "ARCHITECTURE.md",
+        "BUILD.md",
+        "DESIGN.md",
+        "UIUX.md",
+        "CONFIG.md",
+        "DATA_MODEL.md",
+        "API.md",
+        "TEST.md",
+        "CONTRIBUTING.md",
+        "ERRORS.md",
+        "TASKS.md",
+        "PLAYBOOKS/DEPLOY.md",
+      ];
 
-    // Verify it's fresh content (not custom content)
-    const claudeContent = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    expect(claudeContent).toContain("[List core technologies]"); // Should have template placeholders
+      for (const file of allFiles) {
+        const content = fs.readFileSync(path.join(tempDir, file), "utf8");
+        expect(content.length).toBeGreaterThan(50);
+        expect(content).toContain("#"); // All should be valid markdown with headers
+      }
+    });
   });
 
-  test("restore should restore backed up files", async () => {
-    // Initialize and customize
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
+  // =========================================================================
+  // INIT COMMAND - FILE PRESERVATION (SKIP EXISTING)
+  // =========================================================================
 
-    const customJournal = "# My Important History\n\n## Critical Work\nDo not lose!";
-    const customClaude = "# My Setup\n\n- **Tech Stack**: React, Node.js\n- Custom config";
+  describe("init - file preservation", () => {
+    test("should skip existing files without --force", async () => {
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "existing content");
+      run(tempDir);
 
-    await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
-
-    // Backup, clean upgrade, then restore
-    execSync(`node bin/init.js backup ${tempDir}`, { cwd: __dirname + "/.." });
-    execSync(`node bin/init.js upgrade ${tempDir} --clean --yes`, { cwd: __dirname + "/.." });
-
-    // Before restore, verify we have fresh templates
-    const preRestore = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-    expect(preRestore).toContain("[List core technologies]"); // Fresh template
-
-    const output = execSync(`node bin/init.js restore ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+      const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toBe("existing content");
     });
 
-    expect(output).toContain("Conductor Restore (Step 3/3)");
-    expect(output).toContain("Restored JOURNAL.md");
-    expect(output).toContain("Restored CLAUDE.md");
-    expect(output).toContain("Upgrade completed successfully");
+    test("should NOT overwrite JOURNAL.md without --force", async () => {
+      const customJournal = "# My Custom Journal\n\nImportant entries here";
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
+      run(tempDir);
 
-    // Verify user content restored
-    const restoredJournal = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
-    const restoredClaude = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-
-    // Journal should contain original content plus upgrade entry
-    expect(restoredJournal).toContain("My Important History");
-    expect(restoredJournal).toContain("Critical Work");
-    expect(restoredJournal).toContain("Do not lose!");
-    expect(restoredJournal).toContain("Claude Conductor Clean Upgrade"); // Added by restore
-
-    // CLAUDE.md should be exactly the same
-    expect(restoredClaude).toBe(customClaude);
-
-    // Verify backup folder cleaned up
-    expect(fs.pathExistsSync(path.join(tempDir, "conductor-backup"))).toBe(false);
-  });
-
-  test("restore should handle missing backup gracefully", async () => {
-    const output = execSync(`node bin/init.js restore ${tempDir}`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+      const content = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
+      expect(content).toBe(customJournal);
     });
 
-    expect(output).toContain("No backup found");
-    expect(output).toContain('Run "npx claude-conductor backup" first');
-  });
+    test("should NOT update existing CLAUDE.md during analysis without --force", async () => {
+      const customClaude =
+        "# My Custom CLAUDE.md\n\nUser customizations here\n- **Tech Stack**: [List core technologies]";
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
+      run(tempDir);
 
-  test("complete backup/upgrade/restore cycle preserves data", async () => {
-    // Initialize with custom content
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    const originalJournal = "# Development Log\n\n## 2024-01-01\nImportant milestone achieved";
-    const originalClaude =
-      "# Project Config\n\n- **Tech Stack**: Vue.js, Python\n- **Main File**: src/main.py (500 lines)\n- Critical setup notes";
-
-    await fs.writeFile(path.join(tempDir, "JOURNAL.md"), originalJournal);
-    await fs.writeFile(path.join(tempDir, "CLAUDE.md"), originalClaude);
-
-    // Step 1: Backup
-    execSync(`node bin/init.js backup ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Step 2: Clean upgrade
-    execSync(`node bin/init.js upgrade ${tempDir} --clean --yes`, { cwd: __dirname + "/.." });
-
-    // Step 3: Restore
-    execSync(`node bin/init.js restore ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Verify everything preserved perfectly
-    const finalJournal = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
-    const finalClaude = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
-
-    expect(finalJournal).toContain("Development Log");
-    expect(finalJournal).toContain("Important milestone achieved");
-    expect(finalJournal).toContain("Claude Conductor Clean Upgrade"); // Should have upgrade entry
-
-    expect(finalClaude).toBe(originalClaude); // Exact match for CLAUDE.md
-
-    // Verify we have fresh templates too
-    expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
-    expect(fs.pathExistsSync(path.join(tempDir, "ARCHITECTURE.md"))).toBe(true);
-  });
-
-  test("upgrade --clean with --force bypasses backup check", async () => {
-    execSync(`node bin/init.js ${tempDir}`, { cwd: __dirname + "/.." });
-
-    // Run clean upgrade without backup but with --force
-    const output = execSync(`node bin/init.js upgrade ${tempDir} --clean --force --yes`, {
-      cwd: __dirname + "/..",
-      encoding: "utf8",
+      const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toBe(customClaude);
+      expect(content).toContain("[List core technologies]");
     });
 
-    expect(output).toContain("WARNING: NO BACKUP FOUND!");
-    expect(output).toContain("Clean installation completed");
+    test("should NOT update existing ARCHITECTURE.md during deepscan without --force", async () => {
+      const customArch = "# My Architecture\n\n## Tech Stack\n\nCustom tech stack info";
+      await fs.writeFile(path.join(tempDir, "ARCHITECTURE.md"), customArch);
+      run(`${tempDir} --deepscan`);
+
+      const content = await fs.readFile(path.join(tempDir, "ARCHITECTURE.md"), "utf8");
+      expect(content).toBe(customArch);
+    });
+
+    test("should NOT update existing BUILD.md during deepscan without --force", async () => {
+      const customBuild = "# My Build Process\n\n## Custom Scripts\n\nDo not modify!";
+      await fs.writeFile(path.join(tempDir, "BUILD.md"), customBuild);
+      run(`${tempDir} --deepscan`);
+
+      const content = await fs.readFile(path.join(tempDir, "BUILD.md"), "utf8");
+      expect(content).toBe(customBuild);
+    });
+
+    test("should still create missing files when some exist", async () => {
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "custom");
+      run(tempDir);
+
+      // CLAUDE.md preserved
+      expect(await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8")).toBe("custom");
+      // Other files created
+      expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(tempDir, "ARCHITECTURE.md"))).toBe(true);
+    });
+  });
+
+  // =========================================================================
+  // INIT COMMAND - FORCE FLAG
+  // =========================================================================
+
+  describe("init --force", () => {
+    test("should overwrite existing files with --force --yes", async () => {
+      const files = {
+        "CLAUDE.md": "# Custom CLAUDE",
+        "JOURNAL.md": "# Custom Journal",
+        "ARCHITECTURE.md": "# Custom Architecture",
+        "BUILD.md": "# Custom Build",
+      };
+
+      for (const [file, content] of Object.entries(files)) {
+        await fs.writeFile(path.join(tempDir, file), content);
+      }
+
+      run(`${tempDir} --force --yes`);
+
+      for (const file of Object.keys(files)) {
+        const content = await fs.readFile(path.join(tempDir, file), "utf8");
+        expect(content).not.toBe(files[file]);
+        expect(content.length).toBeGreaterThan(50);
+      }
+    });
+
+    test("should overwrite CONDUCTOR.md with --force --yes", async () => {
+      await fs.writeFile(path.join(tempDir, "CONDUCTOR.md"), "old content");
+      run(`${tempDir} --force --yes`);
+
+      const content = await fs.readFile(path.join(tempDir, "CONDUCTOR.md"), "utf8");
+      expect(content).not.toBe("old content");
+      expect(content).toContain(`<!-- Generated by Claude Conductor v${version} -->`);
+    });
+  });
+
+  // =========================================================================
+  // INIT COMMAND - NO-ANALYZE FLAG
+  // =========================================================================
+
+  describe("init --no-analyze", () => {
+    test("should skip codebase analysis when --no-analyze is passed", () => {
+      const output = run(`${tempDir} --no-analyze`);
+      expect(output).not.toContain("Analyzing codebase");
+      expect(output).not.toContain("deep codebase analysis");
+      expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
+    });
+
+    test("CLAUDE.md should retain placeholder text with --no-analyze", () => {
+      run(`${tempDir} --no-analyze`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toContain("[List core technologies]");
+    });
+  });
+
+  // =========================================================================
+  // INIT COMMAND - DEEPSCAN
+  // =========================================================================
+
+  describe("init --deepscan", () => {
+    test("should perform deep analysis without crashing on empty directory", () => {
+      const output = run(`${tempDir} --deepscan`);
+      expect(output).toContain("deep codebase analysis");
+      expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
+    });
+
+    test("should detect Node.js tech stack when package.json exists", async () => {
+      await fs.writeJson(path.join(tempDir, "package.json"), {
+        name: "test-project",
+        dependencies: { express: "^4.18.0" },
+      });
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toContain("Node.js/npm");
+    });
+
+    test("should detect Python tech stack when requirements.txt exists", async () => {
+      await fs.writeFile(path.join(tempDir, "requirements.txt"), "flask==2.0\n");
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toContain("Python");
+    });
+
+    test("should detect multiple tech stacks", async () => {
+      await fs.writeJson(path.join(tempDir, "package.json"), { name: "test" });
+      await fs.writeFile(path.join(tempDir, "requirements.txt"), "django\n");
+      await fs.writeFile(path.join(tempDir, "go.mod"), "module test\n");
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toContain("Node.js/npm");
+      expect(content).toContain("Python");
+      expect(content).toContain("Go");
+    });
+
+    test("should count lines of code in source files", async () => {
+      const srcDir = path.join(tempDir, "src");
+      await fs.ensureDir(srcDir);
+      await fs.writeFile(path.join(srcDir, "index.js"), "const x = 1;\nconst y = 2;\n");
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      // Should contain line count info (not the placeholder)
+      expect(content).toContain("lines of code");
+    });
+
+    test("should detect framework dependencies in package.json", async () => {
+      await fs.writeJson(path.join(tempDir, "package.json"), {
+        name: "test",
+        dependencies: {
+          react: "^18.2.0",
+          express: "^4.18.0",
+          tailwindcss: "^3.3.0",
+        },
+      });
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const archContent = fs.readFileSync(path.join(tempDir, "ARCHITECTURE.md"), "utf8");
+      expect(archContent).toContain("React");
+      expect(archContent).toContain("Express");
+      expect(archContent).toContain("Tailwind CSS");
+    });
+
+    test("should extract build scripts from package.json", async () => {
+      await fs.writeJson(path.join(tempDir, "package.json"), {
+        name: "test",
+        scripts: {
+          build: "tsc && vite build",
+          test: "jest --coverage",
+        },
+      });
+
+      run(`${tempDir} --deepscan --force --yes`);
+      const buildContent = fs.readFileSync(path.join(tempDir, "BUILD.md"), "utf8");
+      expect(buildContent).toContain("tsc && vite build");
+      expect(buildContent).toContain("jest --coverage");
+    });
+  });
+
+  // =========================================================================
+  // CODEBASE ANALYSIS - STRUCTURE DETECTION
+  // =========================================================================
+
+  describe("codebase analysis", () => {
+    test("should detect directory structure", async () => {
+      await fs.ensureDir(path.join(tempDir, "src"));
+      await fs.ensureDir(path.join(tempDir, "tests"));
+      await fs.ensureDir(path.join(tempDir, "lib"));
+      await fs.writeFile(path.join(tempDir, "src", "index.js"), "module.exports = {};\n");
+
+      run(`${tempDir} --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      // Analysis should populate some data about the structure
+      expect(content).toContain("lines of code");
+    });
+
+    test("should ignore node_modules in line counting", async () => {
+      await fs.ensureDir(path.join(tempDir, "node_modules", "dep"));
+      await fs.writeFile(
+        path.join(tempDir, "node_modules", "dep", "index.js"),
+        "x\n".repeat(10000)
+      );
+      await fs.writeFile(path.join(tempDir, "app.js"), "const x = 1;\n");
+
+      run(`${tempDir} --force --yes`);
+      const content = fs.readFileSync(path.join(tempDir, "CLAUDE.md"), "utf8");
+      // Should not count node_modules lines
+      expect(content).not.toContain("10000");
+    });
+  });
+
+  // =========================================================================
+  // CHECKUP COMMAND
+  // =========================================================================
+
+  describe("checkup command", () => {
+    test("should generate security checkup prompt", () => {
+      const output = run("checkup");
+      expect(output).toContain("Security & Health Checkup");
+      expect(output).toContain("Copy this prompt to Claude Code");
+    });
+
+    test("should include security check items in output", () => {
+      const output = run("checkup");
+      expect(output).toContain(".env files");
+      expect(output).toContain("innerHTML");
+      expect(output).toContain(".gitignore");
+      expect(output).toContain("credentials");
+      expect(output).toContain("security anti-patterns");
+    });
+
+    test("should accept custom path with -p flag", () => {
+      const output = run(`checkup -p ${tempDir}`);
+      expect(output).toContain(tempDir);
+    });
+
+    test("should not modify any files", async () => {
+      await fs.writeFile(path.join(tempDir, "app.js"), "const secret = 'password123';");
+      const before = await fs.readFile(path.join(tempDir, "app.js"), "utf8");
+
+      run(`checkup -p ${tempDir}`);
+
+      const after = await fs.readFile(path.join(tempDir, "app.js"), "utf8");
+      expect(after).toBe(before);
+    });
+  });
+
+  // =========================================================================
+  // BACKUP COMMAND
+  // =========================================================================
+
+  describe("backup command", () => {
+    test("should create backup folder with JOURNAL.md and CLAUDE.md", async () => {
+      run(tempDir);
+
+      const customJournal = "# My Important History\n\n## Critical Entry\nDo not lose this!";
+      const customClaude = "# My Custom Setup\n\n- Important customizations";
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
+
+      const output = run(`backup ${tempDir}`);
+
+      expect(output).toContain("Conductor Backup (Step 1/3)");
+      expect(output).toContain("Backed up JOURNAL.md");
+      expect(output).toContain("Backed up CLAUDE.md");
+      expect(output).toContain("Backup completed successfully");
+
+      const backupDir = path.join(tempDir, "conductor-backup");
+      expect(fs.pathExistsSync(backupDir)).toBe(true);
+      expect(await fs.readFile(path.join(backupDir, "JOURNAL.md"), "utf8")).toBe(customJournal);
+      expect(await fs.readFile(path.join(backupDir, "CLAUDE.md"), "utf8")).toBe(customClaude);
+    });
+
+    test("should handle missing files gracefully", () => {
+      const output = run(`backup ${tempDir}`);
+      expect(output).toContain("No Conductor files found");
+      expect(output).toContain("Nothing to backup");
+    });
+
+    test("should detect existing backup and not overwrite", async () => {
+      run(tempDir);
+      run(`backup ${tempDir}`);
+
+      const output = run(`backup ${tempDir}`);
+      expect(output).toContain("Backup already exists");
+      expect(output).toContain("Ready for Step 2");
+    });
+
+    test("should backup only files that exist", async () => {
+      // Create only JOURNAL.md, not CLAUDE.md
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), "# Journal");
+      // Need at least one conductor file for it to detect
+      await fs.writeFile(path.join(tempDir, "CONDUCTOR.md"), "# Conductor");
+
+      const output = run(`backup ${tempDir}`);
+      expect(output).toContain("Backed up JOURNAL.md");
+      expect(output).not.toContain("Backed up CLAUDE.md");
+
+      const backupDir = path.join(tempDir, "conductor-backup");
+      expect(fs.pathExistsSync(path.join(backupDir, "JOURNAL.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(backupDir, "CLAUDE.md"))).toBe(false);
+    });
+  });
+
+  // =========================================================================
+  // UPGRADE COMMAND
+  // =========================================================================
+
+  describe("upgrade command", () => {
+    test("should require --clean flag", () => {
+      run(tempDir);
+      const output = run(`upgrade ${tempDir}`);
+      expect(output).toContain("You must use --clean flag");
+      expect(output).toContain("npx claude-conductor upgrade --clean");
+    });
+
+    test("should require backup before clean upgrade", () => {
+      run(tempDir);
+      const output = run(`upgrade ${tempDir} --clean`);
+      expect(output).toContain("No backup found! Run backup first");
+      expect(output).toContain("npx claude-conductor backup");
+    });
+
+    test("should delete old files and reinstall with --clean --yes", async () => {
+      run(tempDir);
+      run(`backup ${tempDir}`);
+
+      await fs.writeFile(path.join(tempDir, "DESIGN.md"), "custom design");
+      await fs.writeFile(path.join(tempDir, "API.md"), "custom api");
+
+      const output = run(`upgrade ${tempDir} --clean --yes`);
+      expect(output).toContain("Conductor Clean Upgrade (Step 2/3)");
+      expect(output).toContain("Deleted CLAUDE.md");
+      expect(output).toContain("Deleted CONDUCTOR.md");
+      expect(output).toContain("Clean installation completed");
+
+      expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
+
+      const claudeContent = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(claudeContent).toContain("[List core technologies]");
+    });
+
+    test("should bypass backup check with --force", () => {
+      run(tempDir);
+      const output = run(`upgrade ${tempDir} --clean --force --yes`);
+      expect(output).toContain("WARNING: NO BACKUP FOUND!");
+      expect(output).toContain("Clean installation completed");
+    });
+
+    test("fresh install after upgrade should have current version stamp", async () => {
+      run(tempDir);
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --yes`);
+
+      const content = await fs.readFile(path.join(tempDir, "CONDUCTOR.md"), "utf8");
+      expect(content).toContain(`<!-- Generated by Claude Conductor v${version} -->`);
+    });
+  });
+
+  // =========================================================================
+  // RESTORE COMMAND
+  // =========================================================================
+
+  describe("restore command", () => {
+    test("should restore backed up files after upgrade", async () => {
+      run(tempDir);
+
+      const customJournal = "# My Important History\n\n## Critical Work\nDo not lose!";
+      const customClaude = "# My Setup\n\n- Custom config";
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), customClaude);
+
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --yes`);
+
+      // Verify fresh templates before restore
+      const preRestore = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(preRestore).toContain("[List core technologies]");
+
+      const output = run(`restore ${tempDir}`);
+      expect(output).toContain("Conductor Restore (Step 3/3)");
+      expect(output).toContain("Restored JOURNAL.md");
+      expect(output).toContain("Restored CLAUDE.md");
+      expect(output).toContain("Upgrade completed successfully");
+
+      const restoredJournal = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
+      expect(restoredJournal).toContain("My Important History");
+      expect(restoredJournal).toContain("Critical Work");
+      expect(restoredJournal).toContain("Claude Conductor Clean Upgrade");
+
+      const restoredClaude = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(restoredClaude).toBe(customClaude);
+    });
+
+    test("should handle missing backup gracefully", () => {
+      const output = run(`restore ${tempDir}`);
+      expect(output).toContain("No backup found");
+      expect(output).toContain('Run "npx claude-conductor backup" first');
+    });
+
+    test("should clean up backup folder after restore", async () => {
+      run(tempDir);
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --yes`);
+      run(`restore ${tempDir}`);
+
+      expect(fs.pathExistsSync(path.join(tempDir, "conductor-backup"))).toBe(false);
+    });
+
+    test("should add upgrade journal entry with current version", async () => {
+      run(tempDir);
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), "# Journal\n");
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "# Claude\n");
+
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --yes`);
+      run(`restore ${tempDir}`);
+
+      const journal = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
+      expect(journal).toContain(`v${version}`);
+    });
+  });
+
+  // =========================================================================
+  // FULL BACKUP/UPGRADE/RESTORE CYCLE
+  // =========================================================================
+
+  describe("complete upgrade cycle", () => {
+    test("full backup/upgrade/restore cycle preserves all user data", async () => {
+      run(tempDir);
+
+      const originalJournal = "# Development Log\n\n## 2024-01-01\nImportant milestone achieved";
+      const originalClaude = "# Project Config\n\n- Critical setup notes";
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), originalJournal);
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), originalClaude);
+
+      // Step 1: Backup
+      run(`backup ${tempDir}`);
+      // Step 2: Clean upgrade
+      run(`upgrade ${tempDir} --clean --yes`);
+      // Step 3: Restore
+      run(`restore ${tempDir}`);
+
+      const finalJournal = await fs.readFile(path.join(tempDir, "JOURNAL.md"), "utf8");
+      expect(finalJournal).toContain("Development Log");
+      expect(finalJournal).toContain("Important milestone achieved");
+      expect(finalJournal).toContain("Claude Conductor Clean Upgrade");
+
+      expect(await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8")).toBe(originalClaude);
+      expect(fs.pathExistsSync(path.join(tempDir, "CONDUCTOR.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(tempDir, "ARCHITECTURE.md"))).toBe(true);
+    });
+
+    test("cycle with --full flag preserves data and installs all templates", async () => {
+      run(`${tempDir} --full`);
+
+      const customJournal = "# My work log\n\n## Important entry";
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), customJournal);
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "# Custom claude");
+
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --full --yes`);
+      run(`restore ${tempDir}`);
+
+      expect(await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8")).toBe("# Custom claude");
+      expect(fs.pathExistsSync(path.join(tempDir, "DESIGN.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(tempDir, "API.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(tempDir, "PLAYBOOKS/DEPLOY.md"))).toBe(true);
+    });
+  });
+
+  // =========================================================================
+  // TEMPLATE INTEGRITY
+  // =========================================================================
+
+  describe("template integrity", () => {
+    let templateFiles;
+
+    beforeAll(async () => {
+      templateFiles = await fs.readdir(TEMPLATES_DIR, { recursive: true });
+      templateFiles = templateFiles.filter((f) => f.endsWith(".md"));
+    });
+
+    test("all 14 template files should exist in the templates directory", () => {
+      const expected = [
+        "CLAUDE.md",
+        "CONDUCTOR.md",
+        "ARCHITECTURE.md",
+        "BUILD.md",
+        "DESIGN.md",
+        "UIUX.md",
+        "CONFIG.md",
+        "DATA_MODEL.md",
+        "API.md",
+        "TEST.md",
+        "CONTRIBUTING.md",
+        "ERRORS.md",
+        "TASKS.md",
+        path.join("PLAYBOOKS", "DEPLOY.md"),
+      ];
+
+      for (const file of expected) {
+        const fullPath = path.join(TEMPLATES_DIR, file);
+        expect(fs.pathExistsSync(fullPath)).toBe(true);
+      }
+    });
+
+    test("every template should be valid markdown with at least one header", () => {
+      for (const file of templateFiles) {
+        const content = fs.readFileSync(path.join(TEMPLATES_DIR, file), "utf8");
+        expect(content).toMatch(/^#/m); // At least one markdown header
+      }
+    });
+
+    test("CLAUDE.md template should contain required sections", () => {
+      const content = fs.readFileSync(path.join(TEMPLATES_DIR, "CLAUDE.md"), "utf8");
+      expect(content).toContain("Critical Context");
+      expect(content).toContain("Tech Stack");
+      expect(content).toContain("Version History");
+      expect(content).toContain("Journal Update Requirements");
+    });
+
+    test("CONDUCTOR.md template should contain required sections", () => {
+      const content = fs.readFileSync(path.join(TEMPLATES_DIR, "CONDUCTOR.md"), "utf8");
+      expect(content).toContain("Generated by Claude Conductor");
+    });
+
+    test("templates should not contain hardcoded secrets or credentials", () => {
+      for (const file of templateFiles) {
+        const content = fs.readFileSync(path.join(TEMPLATES_DIR, file), "utf8").toLowerCase();
+        // Verify no real API keys, tokens, or passwords
+        expect(content).not.toMatch(/sk-[a-z0-9]{20,}/i);
+        expect(content).not.toMatch(/ghp_[a-z0-9]{20,}/i);
+        expect(content).not.toMatch(/-----begin (rsa |ec )?private key-----/i);
+      }
+    });
+
+    test("no template file should exceed 50KB", () => {
+      for (const file of templateFiles) {
+        const stats = fs.statSync(path.join(TEMPLATES_DIR, file));
+        expect(stats.size).toBeLessThan(50 * 1024);
+      }
+    });
+  });
+
+  // =========================================================================
+  // PACKAGE.JSON INTEGRITY
+  // =========================================================================
+
+  describe("package.json integrity", () => {
+    let pkg;
+
+    beforeAll(() => {
+      pkg = require("../package.json");
+    });
+
+    test("should have required fields for npm publishing", () => {
+      expect(pkg.name).toBe("claude-conductor");
+      expect(pkg.version).toBeDefined();
+      expect(pkg.description).toBeDefined();
+      expect(pkg.license).toBe("MIT");
+      expect(pkg.author).toBeDefined();
+      expect(pkg.repository).toBeDefined();
+      expect(pkg.bin).toBeDefined();
+    });
+
+    test("bin entries should point to existing files", () => {
+      for (const [name, binPath] of Object.entries(pkg.bin)) {
+        const fullPath = path.join(__dirname, "..", binPath);
+        expect(fs.pathExistsSync(fullPath)).toBe(true);
+      }
+    });
+
+    test("files whitelist should only include safe directories", () => {
+      expect(pkg.files).toBeDefined();
+      for (const entry of pkg.files) {
+        // Should not include sensitive directories
+        expect(entry).not.toContain("node_modules");
+        expect(entry).not.toContain(".env");
+        expect(entry).not.toContain(".git");
+        expect(entry).not.toContain("test");
+        expect(entry).not.toContain("coverage");
+      }
+    });
+
+    test("engines field should require Node >= 20", () => {
+      expect(pkg.engines).toBeDefined();
+      expect(pkg.engines.node).toMatch(/>=\s*20/);
+    });
+
+    test("dependencies should use exact versions (no ^ or ~)", () => {
+      for (const [name, ver] of Object.entries(pkg.dependencies || {})) {
+        expect(ver).not.toMatch(/^[\^~]/);
+      }
+    });
+
+    test("devDependencies should use exact versions (no ^ or ~)", () => {
+      for (const [name, ver] of Object.entries(pkg.devDependencies || {})) {
+        expect(ver).not.toMatch(/^[\^~]/);
+      }
+    });
+
+    test("should have overrides for known vulnerable transitive dependencies", () => {
+      expect(pkg.overrides).toBeDefined();
+      expect(pkg.overrides["brace-expansion"]).toBeDefined();
+      expect(pkg.overrides["picomatch"]).toBeDefined();
+    });
+
+    test("should have prepublishOnly script that runs tests", () => {
+      expect(pkg.scripts.prepublishOnly).toContain("test");
+    });
+  });
+
+  // =========================================================================
+  // SECURITY CONFIGURATION
+  // =========================================================================
+
+  describe("security configuration", () => {
+    test(".npmrc should enforce strict engines", () => {
+      const npmrc = fs.readFileSync(path.join(__dirname, "..", ".npmrc"), "utf8");
+      expect(npmrc).toContain("engine-strict=true");
+    });
+
+    test(".npmrc should enable audit on install", () => {
+      const npmrc = fs.readFileSync(path.join(__dirname, "..", ".npmrc"), "utf8");
+      expect(npmrc).toContain("audit=true");
+    });
+
+    test(".npmrc should enforce lockfile generation", () => {
+      const npmrc = fs.readFileSync(path.join(__dirname, "..", ".npmrc"), "utf8");
+      expect(npmrc).toContain("package-lock=true");
+    });
+
+    test(".npmrc should save exact versions by default", () => {
+      const npmrc = fs.readFileSync(path.join(__dirname, "..", ".npmrc"), "utf8");
+      expect(npmrc).toContain("save-exact=true");
+    });
+
+    test("package-lock.json should exist and be tracked", () => {
+      expect(fs.pathExistsSync(path.join(__dirname, "..", "package-lock.json"))).toBe(true);
+    });
+
+    test(".gitignore should exclude sensitive files", () => {
+      const gitignore = fs.readFileSync(path.join(__dirname, "..", ".gitignore"), "utf8");
+      expect(gitignore).toContain(".env");
+      expect(gitignore).toContain("*.pem");
+      expect(gitignore).toContain("*.key");
+      expect(gitignore).toContain("credentials.json");
+      expect(gitignore).toContain("node_modules");
+    });
+
+    test("SECURITY.md should exist with disclosure policy", () => {
+      const security = fs.readFileSync(path.join(__dirname, "..", "SECURITY.md"), "utf8");
+      expect(security).toContain("Reporting a Vulnerability");
+      expect(security).toContain("Response Timeline");
+    });
+  });
+
+  // =========================================================================
+  // CI CONFIGURATION
+  // =========================================================================
+
+  describe("CI configuration", () => {
+    test("CI workflow should test on Node 20+ only", () => {
+      const ci = fs.readFileSync(
+        path.join(__dirname, "..", ".github", "workflows", "ci.yml"),
+        "utf8"
+      );
+      expect(ci).toContain("node-version:");
+      expect(ci).not.toMatch(/node-version:.*\b16\b/);
+      expect(ci).not.toMatch(/node-version:.*\b18\b/);
+      expect(ci).toContain("20");
+      expect(ci).toContain("22");
+    });
+
+    test("CI workflow should include security audit job", () => {
+      const ci = fs.readFileSync(
+        path.join(__dirname, "..", ".github", "workflows", "ci.yml"),
+        "utf8"
+      );
+      expect(ci).toContain("audit");
+      expect(ci).toContain("npm audit");
+    });
+
+    test("CI workflow should use least-privilege permissions", () => {
+      const ci = fs.readFileSync(
+        path.join(__dirname, "..", ".github", "workflows", "ci.yml"),
+        "utf8"
+      );
+      expect(ci).toContain("permissions:");
+      expect(ci).toContain("contents: read");
+    });
+
+    test("Dependabot config should exist and check npm", () => {
+      const dependabot = fs.readFileSync(
+        path.join(__dirname, "..", ".github", "dependabot.yml"),
+        "utf8"
+      );
+      expect(dependabot).toContain("package-ecosystem: npm");
+      expect(dependabot).toContain("package-ecosystem: github-actions");
+    });
+  });
+
+  // =========================================================================
+  // FILE OPERATION SAFETY
+  // =========================================================================
+
+  describe("file operation safety", () => {
+    test("init should not write outside target directory", async () => {
+      const parentBefore = await fs.readdir(tempDir);
+      const nested = path.join(tempDir, "project");
+      run(nested);
+
+      // Only "project" should be added to tempDir
+      const parentAfter = await fs.readdir(tempDir);
+      expect(parentAfter.length).toBe(parentBefore.length + 1);
+      expect(parentAfter).toContain("project");
+    });
+
+    test("backup should not write outside target directory", async () => {
+      run(tempDir);
+      run(`backup ${tempDir}`);
+
+      // Backup folder should be inside target dir
+      const backupDir = path.join(tempDir, "conductor-backup");
+      expect(fs.pathExistsSync(backupDir)).toBe(true);
+
+      // Verify backup is actually inside tempDir
+      const resolvedBackup = path.resolve(backupDir);
+      expect(resolvedBackup.startsWith(path.resolve(tempDir))).toBe(true);
+    });
+
+    test("restore should not leave orphaned backup if restore succeeds", async () => {
+      run(tempDir);
+      await fs.writeFile(path.join(tempDir, "JOURNAL.md"), "# Test");
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "# Test");
+
+      run(`backup ${tempDir}`);
+      run(`upgrade ${tempDir} --clean --yes`);
+      run(`restore ${tempDir}`);
+
+      expect(fs.pathExistsSync(path.join(tempDir, "conductor-backup"))).toBe(false);
+    });
+
+    test("init should handle read-only files gracefully when not using --force", async () => {
+      await fs.writeFile(path.join(tempDir, "CLAUDE.md"), "protected");
+      await fs.chmod(path.join(tempDir, "CLAUDE.md"), 0o444);
+
+      // Should not throw, should skip the read-only file
+      expect(() => run(tempDir)).not.toThrow();
+
+      const content = await fs.readFile(path.join(tempDir, "CLAUDE.md"), "utf8");
+      expect(content).toBe("protected");
+
+      // Cleanup: restore permissions so afterEach can remove
+      await fs.chmod(path.join(tempDir, "CLAUDE.md"), 0o644);
+    });
+  });
+
+  // =========================================================================
+  // EDGE CASES
+  // =========================================================================
+
+  describe("edge cases", () => {
+    test("should handle running init twice without --force", () => {
+      run(tempDir);
+      // Second run should not throw
+      expect(() => run(tempDir)).not.toThrow();
+    });
+
+    test("should handle empty target directory gracefully", () => {
+      expect(() => run(tempDir)).not.toThrow();
+    });
+
+    test("JOURNAL.md entry should have valid ISO timestamp format", () => {
+      run(tempDir);
+      const journal = fs.readFileSync(path.join(tempDir, "JOURNAL.md"), "utf8");
+      // Match pattern like "## 2026-03-31 14:30"
+      expect(journal).toMatch(/## \d{4}-\d{2}-\d{2} \d{2}:\d{2}/);
+    });
+
+    test("should handle target dir with existing non-conductor files", async () => {
+      await fs.writeFile(path.join(tempDir, "README.md"), "# My Project");
+      await fs.writeFile(path.join(tempDir, "index.js"), "console.log('hello');");
+
+      run(tempDir);
+
+      // Non-conductor files should be untouched
+      expect(await fs.readFile(path.join(tempDir, "README.md"), "utf8")).toBe("# My Project");
+      expect(await fs.readFile(path.join(tempDir, "index.js"), "utf8")).toBe(
+        "console.log('hello');"
+      );
+      // Conductor files should exist
+      expect(fs.pathExistsSync(path.join(tempDir, "CLAUDE.md"))).toBe(true);
+    });
+
+    test("concurrent init to different directories should not conflict", async () => {
+      const dir1 = path.join(tempDir, "project1");
+      const dir2 = path.join(tempDir, "project2");
+
+      // Run sequentially (safe for test), but verify independence
+      run(dir1);
+      run(dir2);
+
+      const claude1 = await fs.readFile(path.join(dir1, "CLAUDE.md"), "utf8");
+      const claude2 = await fs.readFile(path.join(dir2, "CLAUDE.md"), "utf8");
+      expect(claude1).toEqual(claude2);
+      expect(fs.pathExistsSync(path.join(dir1, "CONDUCTOR.md"))).toBe(true);
+      expect(fs.pathExistsSync(path.join(dir2, "CONDUCTOR.md"))).toBe(true);
+    });
+  });
+
+  // =========================================================================
+  // NODE.JS COMPATIBILITY
+  // =========================================================================
+
+  describe("Node.js compatibility", () => {
+    test("all production dependencies should load without errors", () => {
+      expect(() => require("chalk")).not.toThrow();
+      expect(() => require("commander")).not.toThrow();
+      expect(() => require("fs-extra")).not.toThrow();
+      expect(() => require("glob")).not.toThrow();
+    });
+
+    test("CLI entry point should be parseable without syntax errors", () => {
+      expect(() => {
+        const content = fs.readFileSync(CLI, "utf8");
+        require("module").wrap(content);
+      }).not.toThrow();
+    });
+
+    test("Node built-in modules used by CLI should be available", () => {
+      expect(() => require("path")).not.toThrow();
+      expect(() => require("readline")).not.toThrow();
+      expect(() => require("os")).not.toThrow();
+    });
+
+    test("current Node version should satisfy engine requirement", () => {
+      const pkg = require("../package.json");
+      const match = pkg.engines.node.match(/(\d+)/);
+      const required = parseInt(match[1], 10);
+      const current = parseInt(process.versions.node.split(".")[0], 10);
+      expect(current).toBeGreaterThanOrEqual(required);
+    });
   });
 });

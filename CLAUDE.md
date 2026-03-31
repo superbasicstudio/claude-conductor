@@ -159,7 +159,7 @@ For AI behavior management, see [Claude Anchor](https://github.com/superbasicstu
 
 ## Current State
 - [x] CONDUCTOR.md template complete
-- [x] CI pipeline (GitHub Actions, Node 18/20/22)
+- [x] CI pipeline (GitHub Actions, Node 20/22/24)
 - [x] Code quality tooling (ESLint, Prettier, Husky, lint-staged)
 - [x] Automated dependency updates (Dependabot)
 - [x] Security audit and .gitignore hardening
@@ -171,6 +171,7 @@ For AI behavior management, see [Claude Anchor](https://github.com/superbasicstu
 ## Version History
 - **v2.1.0** - ESLint, Prettier, Husky, GitHub Actions CI, Dependabot
 - **v2.0.1** - Hardened .gitignore, removed example PII, repo cleanup
+- **v2.2.0** - Node.js minimum raised to >=20.0.0, security hardening, pinned deps, CVE fixes
 - **v2.0.0** - Node.js minimum raised to >=18.0.0
 - **v1.3.0** - Security fixes, backfilled changelog, SECURITY.md
 - **v1.0.0** - Initial CONDUCTOR.md template created

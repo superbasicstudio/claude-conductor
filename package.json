@@ -1,6 +1,6 @@
 {
   "name": "claude-conductor",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Modular documentation framework for AI-assisted development with Claude Code",
   "bin": {
     "claude-conductor": "bin/init.js",
@@ -49,22 +49,27 @@
     "RESPONSE_STYLE_CONFIG.md"
   ],
   "dependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^11.1.0",
-    "fs-extra": "^11.3.4",
-    "glob": "^10.5.0"
+    "chalk": "4.1.2",
+    "commander": "11.1.0",
+    "fs-extra": "11.3.4",
+    "glob": "10.5.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.3",
-    "eslint": "^9.39.4",
-    "globals": "^17.4.0",
-    "husky": "^9.1.7",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.5.2",
-    "prettier": "^3.8.1"
+    "@eslint/js": "9.39.4",
+    "eslint": "9.39.4",
+    "globals": "17.4.0",
+    "husky": "9.1.7",
+    "jest": "29.7.0",
+    "lint-staged": "15.5.2",
+    "prettier": "3.8.1"
+  },
+  "overrides": {
+    "brace-expansion": ">=1.1.13",
+    "picomatch": ">=2.3.2",
+    "minimatch": ">=3.1.5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "repository": {
     "type": "git",

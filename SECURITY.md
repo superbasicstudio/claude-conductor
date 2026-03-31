@@ -4,7 +4,8 @@
 
 | Version | Supported          | Node.js        |
 |---------|--------------------|----------------|
-| 2.x     | Yes                | >= 18.0.0      |
+| 2.2.x+  | Yes                | >= 20.0.0      |
+| 2.0-2.1 | Security fixes only| >= 18.0.0      |
 | 1.3.x   | Security fixes only| >= 16.0.0      |
 | < 1.3   | No                 | -              |
 
