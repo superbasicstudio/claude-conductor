@@ -17,7 +17,6 @@ program
   .name("claude-conductor")
   .description("Claude Conductor - Documentation framework for AI-assisted development")
   .version(packageJson.version)
-  .option("-V, --version", "output the version number")
   .action(() => {
     // If no subcommand, show help
     program.outputHelp();
